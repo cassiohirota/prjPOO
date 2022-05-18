@@ -1,4 +1,3 @@
-
 package fatec.poo.model;
 
 /**
@@ -11,10 +10,10 @@ public class Cliente extends Pessoa {
     private double limiteCred;
     private double limiteDisp;
 
-    public Cliente(String cpf, String nome, double limiteDisp) {
+    public Cliente(String cpf, String nome, double limiteCred) {
         super(cpf, nome);
-        this.limiteCred = limiteCred;
         this.limiteDisp = limiteCred;
+        this.limiteCred = limiteCred;
     }
 
     public double getLimiteCred() {

@@ -1,4 +1,3 @@
-
 package fatec.poo.model;
 
 /**
@@ -16,6 +15,7 @@ public abstract class Pessoa { // Essa Classe é abstrata?
     private String cep;
     private String ddd;
     private String telefone;
+    private Pedido pedido;
 
     public Pessoa(String cpf, String nome) {
         this.cpf = cpf;
@@ -78,4 +78,11 @@ public abstract class Pessoa { // Essa Classe é abstrata?
         return telefone;
     }
 
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 }
