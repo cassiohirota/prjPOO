@@ -20,6 +20,7 @@ public class Pedido {
     public Pedido(String numero, String dataEmissao) {
         this.numero = numero;
         this.dataEmissao = dataEmissao;
+        pes = new ArrayList<Pessoa>();
     }
 
     public String getNumero() {
