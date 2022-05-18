@@ -1,13 +1,15 @@
+
 package fatec.poo.model;
 
 /**
- *
- * @author 0030482021033
+ * @author Aline Herculano
+ * @author Carolina Santiago
+ * @author Cassio Hiroshi
  */
 public class Vendedor extends Pessoa {
 
     private double salarioBase;
-    private double taxaComissao;
+    private double taxaComissao;  // Taxa de Comissão é em porcentagem %. 
 
     public Vendedor(String cpf, String nome, double salarioBase) {
         super(cpf, nome);

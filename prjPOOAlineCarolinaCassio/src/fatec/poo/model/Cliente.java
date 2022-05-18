@@ -1,17 +1,19 @@
 package fatec.poo.model;
 
 /**
- *
- * @author 0030482021033
+ * @author Aline Herculano
+ * @author Carolina Santiago
+ * @author Cassio Hiroshi
  */
 public class Cliente extends Pessoa {
 
     private double limiteCred;
     private double limiteDisp;
 
-    public Cliente(String cpf, String nome, double limiteDisp) {
+    public Cliente(String cpf, String nome, double limiteCred) {
         super(cpf, nome);
-        this.limiteDisp = limiteDisp;
+        this.limiteDisp = limiteCred;
+        this.limiteCred = limiteCred;
     }
 
     public double getLimiteCred() {

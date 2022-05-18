@@ -1,10 +1,11 @@
 package fatec.poo.model;
 
 /**
- *
- * @author 0030482021033
+ * @author Aline Herculano
+ * @author Carolina Santiago
+ * @author Cassio Hiroshi
  */
-public class Pessoa {
+public abstract class Pessoa { // Essa Classe é abstrata?
 
     private String cpf;
     private String nome;
@@ -14,6 +15,7 @@ public class Pessoa {
     private String cep;
     private String ddd;
     private String telefone;
+    private Pedido pedido;
 
     public Pessoa(String cpf, String nome) {
         this.cpf = cpf;
@@ -76,4 +78,11 @@ public class Pessoa {
         return telefone;
     }
 
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 }
