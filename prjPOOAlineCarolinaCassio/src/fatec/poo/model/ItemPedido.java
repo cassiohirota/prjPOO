@@ -22,6 +22,7 @@ public class ItemPedido {
 
     public void setQtdeVendida(double qtdeVendida) {
         this.qtdeVendida = qtdeVendida;
+        produto.setQtdeEstoque(produto.getQtdeEstoque() - qtdeVendida);
     }
 
     public int getSequencia() {
@@ -40,4 +41,11 @@ public class ItemPedido {
         this.produto = produto;
     }
 
+    public void addPedido(Pedido f) {
+        ped.add(f);
+        f.setItemPed(this);
+    }
+
+    public void listarItemPedido() {
+    }
 }

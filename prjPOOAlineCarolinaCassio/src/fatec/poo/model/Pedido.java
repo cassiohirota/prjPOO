@@ -12,8 +12,9 @@ public class Pedido {
     private String numero;
     private String dataEmissao;
     private String dataPagto;
-    private String formaPagto;
-    private String situacao;
+    private boolean formaPagto;
+    private boolean situacao;
+    private Cliente cliente;
     private ItemPedido itemPed;
     private ArrayList<Pessoa> pes = new ArrayList<Pessoa>();
 
@@ -47,19 +48,19 @@ public class Pedido {
         this.dataPagto = dataPagto;
     }
 
-    public String getFormaPagto() {
+    public boolean isFormaPagto() {
         return formaPagto;
     }
 
-    public void setFormaPagto(String formaPagto) {
+    public void setFormaPagto(boolean formaPagto) {
         this.formaPagto = formaPagto;
     }
 
-    public String getSituacao() {
+    public boolean isSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) {
+    public void setSituacao(boolean situacao) {
         this.situacao = situacao;
     }
 
@@ -70,5 +71,16 @@ public class Pedido {
     public void setItemPed(ItemPedido itemPed) {
         this.itemPed = itemPed;
     }
+    
+    public void addPessoa(Pessoa f){
+        pes.add(f);
+        f.setPedido(this);
+        cliente.setLimiteCred(cliente.getLimiteCred() - itemPed.getQtdeVendida() * itemPed.getProduto().getPreco());
+    }
 
+    /*public void emitirPedido(){
+        for(int i = 0; i < pes.size(); i++){
+        System.out.println("\n\nCPF: " + pes.get(i).getCpf());
+        }
+    }*/
 }
