@@ -51,6 +51,11 @@ public class GuiMenu extends javax.swing.JFrame {
         jMenuCadastros.add(jMenuItemClientes);
 
         jMenuItemVendedores.setText("Vendedores");
+        jMenuItemVendedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVendedoresActionPerformed(evt);
+            }
+        });
         jMenuCadastros.add(jMenuItemVendedores);
 
         jMenuItemProdutos.setText("Produtos");
@@ -58,6 +63,11 @@ public class GuiMenu extends javax.swing.JFrame {
         jMenuCadastros.add(jSeparator1);
 
         jMenuItem5.setText("Sair");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenuCadastros.add(jMenuItem5);
 
         jMenuBar1.add(jMenuCadastros);
@@ -88,6 +98,14 @@ public class GuiMenu extends javax.swing.JFrame {
     private void jMenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientesActionPerformed
         new GuiCliente().setVisible(true);
     }//GEN-LAST:event_jMenuItemClientesActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+       dispose();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItemVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVendedoresActionPerformed
+        new GuiVendedor().setVisible(true);
+    }//GEN-LAST:event_jMenuItemVendedoresActionPerformed
 
     /**
      * @param args the command line arguments
