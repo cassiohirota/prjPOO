@@ -59,6 +59,11 @@ public class GuiMenu extends javax.swing.JFrame {
         jMenuCadastros.add(jMenuItemVendedores);
 
         jMenuItemProdutos.setText("Produtos");
+        jMenuItemProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemProdutosActionPerformed(evt);
+            }
+        });
         jMenuCadastros.add(jMenuItemProdutos);
         jMenuCadastros.add(jSeparator1);
 
@@ -93,6 +98,7 @@ public class GuiMenu extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientesActionPerformed
@@ -106,6 +112,10 @@ public class GuiMenu extends javax.swing.JFrame {
     private void jMenuItemVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVendedoresActionPerformed
         new GuiVendedor().setVisible(true);
     }//GEN-LAST:event_jMenuItemVendedoresActionPerformed
+
+    private void jMenuItemProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdutosActionPerformed
+        new GuiProduto().setVisible(true);
+    }//GEN-LAST:event_jMenuItemProdutosActionPerformed
 
     /**
      * @param args the command line arguments
