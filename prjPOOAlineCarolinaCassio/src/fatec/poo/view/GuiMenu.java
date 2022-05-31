@@ -5,9 +5,14 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.model.Pessoa;
+import fatec.poo.model.Produto;
+import java.util.ArrayList;
+
 /**
- *
- * @author cassio
+ * @author Aline Herculano
+ * @author Carolina Santiago
+ * @author Cassio Hiroshi
  */
 public class GuiMenu extends javax.swing.JFrame {
 
@@ -102,19 +107,19 @@ public class GuiMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemClientesActionPerformed
-        new GuiCliente().setVisible(true);
+        new GuiCliente(cadCliVend).setVisible(true);
     }//GEN-LAST:event_jMenuItemClientesActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-       dispose();
+        dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItemVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVendedoresActionPerformed
-        new GuiVendedor().setVisible(true);
+        new GuiVendedor(cadCliVend).setVisible(true);
     }//GEN-LAST:event_jMenuItemVendedoresActionPerformed
 
     private void jMenuItemProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemProdutosActionPerformed
-        new GuiProduto().setVisible(true);
+        new GuiProduto(cadProd).setVisible(true);
     }//GEN-LAST:event_jMenuItemProdutosActionPerformed
 
     /**
@@ -163,4 +168,7 @@ public class GuiMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuPedido;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    private ArrayList<Pessoa> cadCliVend = new ArrayList<Pessoa>();
+    private ArrayList<Produto> cadProd = new ArrayList<Produto>();
 }
