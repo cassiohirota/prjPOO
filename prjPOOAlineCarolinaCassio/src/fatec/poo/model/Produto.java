@@ -1,6 +1,5 @@
 package fatec.poo.model;
 
-
 /**
  * @author Aline Herculano
  * @author Carolina Santiago
@@ -67,6 +66,10 @@ public class Produto {
 
     public void setItemPedido(ItemPedido itemPedido) {
         this.itemPedido = itemPedido;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
 }

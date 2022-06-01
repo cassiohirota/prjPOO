@@ -7,6 +7,7 @@ package fatec.poo.view;
 
 import fatec.poo.model.Produto;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author Aline Herculano
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * @author Cassio Hiroshi
  */
 public class GuiProduto extends javax.swing.JFrame {
-
+    int i;
     /**
      * Creates new form GuiProduto
      */
@@ -82,10 +83,20 @@ public class GuiProduto extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
@@ -94,6 +105,11 @@ public class GuiProduto extends javax.swing.JFrame {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/rem.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -186,6 +202,27 @@ public class GuiProduto extends javax.swing.JFrame {
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+
+       // prod.add(String.valueOf(txtCodigo.getText()));
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        for(i = 0; i < prod.size(); i++){
+            if(String.valueOf(txtCodigo) == prod.get(i).getCodigo()){
+                txtCodigo.setText(String.valueOf(prod.get(i).getCodigo()));
+                txtDescricao.setText(String.valueOf(prod.get(i).getDescricao()));
+                txtEstoqueMin.setText(String.valueOf(prod.get(i).getEstoqueMinimo()));
+                txtPrecoUnit.setText(String.valueOf(prod.get(i).getPreco()));
+                txtQtdeDisp.setText(String.valueOf(prod.get(i).getQtdeEstoque()));
+            }
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        //prod.remove(i);
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
