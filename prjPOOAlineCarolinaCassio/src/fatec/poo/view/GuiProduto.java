@@ -6,8 +6,8 @@
 package fatec.poo.view;
 
 import fatec.poo.model.Produto;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author Aline Herculano
@@ -15,7 +15,10 @@ import java.util.Collections;
  * @author Cassio Hiroshi
  */
 public class GuiProduto extends javax.swing.JFrame {
+
+    DecimalFormat df = new DecimalFormat("#,##0.00");
     int i;
+
     /**
      * Creates new form GuiProduto
      */
@@ -101,6 +104,11 @@ public class GuiProduto extends javax.swing.JFrame {
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/rem.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -203,26 +211,76 @@ public class GuiProduto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        for(i = 0; i < prod.size(); i++){ //O jeito que fizemos para remover o objeto do ArrayList está certo?
+        prod.remove(i);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
-       // prod.add(String.valueOf(txtCodigo.getText()));
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        Produto produto = new Produto(txtCodigo.getText(), txtDescricao.getName());
+        produto.setQtdeEstoque(Double.parseDouble(txtQtdeDisp.getText()));
+        produto.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
+        produto.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
+        prod.add(produto);
+
+        txtCodigo.setText("");
+        txtDescricao.setText("");
+        txtQtdeDisp.setText("");
+        txtPrecoUnit.setText("");
+        txtEstoqueMin.setText("");
+
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        for(i = 0; i < prod.size(); i++){
-            if(String.valueOf(txtCodigo) == prod.get(i).getCodigo()){
-                txtCodigo.setText(String.valueOf(prod.get(i).getCodigo()));
+
+        for (i = 0; i < prod.size(); i++) {
+
+            if (prod.get(i).getCodigo().equals(txtCodigo.getText())) { // Como fazer a busca do elemento e comparar com o textbox?
                 txtDescricao.setText(String.valueOf(prod.get(i).getDescricao()));
                 txtEstoqueMin.setText(String.valueOf(prod.get(i).getEstoqueMinimo()));
                 txtPrecoUnit.setText(String.valueOf(prod.get(i).getPreco()));
                 txtQtdeDisp.setText(String.valueOf(prod.get(i).getQtdeEstoque()));
+
+                
+                btnConsultar.setEnabled(false);
+                btnIncluir.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+            } else {
+                txtDescricao.setEnabled(true);
+                txtEstoqueMin.setEnabled(true);
+                txtPrecoUnit.setEnabled(true);
+                txtQtdeDisp.setEnabled(true);
+
+                btnConsultar.setEnabled(false);
+                btnIncluir.setEnabled(true);
             }
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        //prod.remove(i);
-    }//GEN-LAST:event_btnExcluirActionPerformed
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        Produto produto = new Produto(txtCodigo.getText(), txtDescricao.getName());
+        produto.setQtdeEstoque(Double.parseDouble(txtQtdeDisp.getText()));
+        produto.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
+        produto.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
+        prod.add(produto);
+
+        txtCodigo.setText("");
+        txtDescricao.setText("");
+        txtQtdeDisp.setText("");
+        txtPrecoUnit.setText("");
+        txtEstoqueMin.setText("");
+
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     /**
      * @param args the command line arguments

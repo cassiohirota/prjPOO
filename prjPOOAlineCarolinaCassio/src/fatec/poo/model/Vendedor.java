@@ -1,5 +1,6 @@
-
 package fatec.poo.model;
+
+import java.util.ArrayList;
 
 /**
  * @author Aline Herculano
@@ -10,6 +11,7 @@ public class Vendedor extends Pessoa {
 
     private double salarioBase;
     private double taxaComissao;  // Taxa de Comissão é em porcentagem %. 
+    private ArrayList<Pedido> pedidos;
 
     public Vendedor(String cpf, String nome, double salarioBase) {
         super(cpf, nome);
@@ -32,4 +34,8 @@ public class Vendedor extends Pessoa {
         this.taxaComissao = taxaComissao;
     }
 
+    public void addPedidos(Pedido p) {
+        pedidos.add(p);
+        p.setVendedor(this);
+    }
 }
