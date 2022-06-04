@@ -5,6 +5,7 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.model.Cliente;
 import fatec.poo.model.Pessoa;
 import fatec.poo.model.Vendedor;
 import java.util.ArrayList;
@@ -315,10 +316,10 @@ public class GuiVendedor extends javax.swing.JFrame {
                 txtCidade.setText(String.valueOf(pes.get(i).getCidade()));
                 txtDdd.setText(String.valueOf(pes.get(i).getDdd()));
                 txtTelefone.setText(String.valueOf(pes.get(i).getTelefone()));
-                //cbxUf.setSelectedIndex(String.valueOf(pes.get(i).getUf()));
+                cbxUf.setSelectedItem(pes.get(i).getUf());
                 txtCep.setText(String.valueOf(pes.get(i).getCep()));
-                //txtSalarioBase.setText();
-                //txtTaxaComissao.setText();
+                txtSalarioBase.setText(String.valueOf(((Vendedor) pes.get(i)).getSalarioBase()));
+                txtTaxaComissao.setText(String.valueOf(((Vendedor) pes.get(i)).getTaxaComissao()));
                 posicao = i;
 
                 txtCpf.setEditable(false);
@@ -357,7 +358,7 @@ public class GuiVendedor extends javax.swing.JFrame {
         vend.setCidade(txtCidade.getText());
         vend.setDdd(txtDdd.getText());
         vend.setTelefone(txtTelefone.getText());
-        vend.setUf(String.valueOf(cbxUf.getSelectedIndex()));
+        vend.setUf(String.valueOf(cbxUf.getSelectedItem()));
         vend.setCep(txtCep.getText());
         vend.setTaxaComissao(Double.parseDouble(txtTaxaComissao.getText()));
         pes.add(vend);
@@ -387,7 +388,7 @@ public class GuiVendedor extends javax.swing.JFrame {
         vend.setCidade(txtCidade.getText());
         vend.setDdd(txtDdd.getText());
         vend.setTelefone(txtTelefone.getText());
-        vend.setUf(String.valueOf(cbxUf.getSelectedIndex()));
+        vend.setUf(String.valueOf(cbxUf.getSelectedItem()));
         vend.setCep(txtCep.getText());
         vend.setTaxaComissao(Double.parseDouble(txtTaxaComissao.getText()));
         pes.set(posicao, vend);
@@ -402,6 +403,8 @@ public class GuiVendedor extends javax.swing.JFrame {
         txtCep.setText("");
         txtSalarioBase.setText("");
         txtTaxaComissao.setText("");
+        
+        txtCpf.setEditable(true);
 
         btnConsultar.setEnabled(true);
         btnIncluir.setEnabled(true);

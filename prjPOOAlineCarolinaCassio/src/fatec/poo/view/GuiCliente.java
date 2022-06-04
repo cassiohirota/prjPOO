@@ -258,7 +258,7 @@ public class GuiCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        //Cliente cli = new Cliente();
+
         listaVazia = pes.isEmpty();
         if (listaVazia == true) {
 
@@ -285,9 +285,9 @@ public class GuiCliente extends javax.swing.JFrame {
                 txtCidade.setText(String.valueOf(pes.get(i).getCidade()));
                 txtDdd.setText(String.valueOf(pes.get(i).getDdd()));
                 txtTelefone.setText(String.valueOf(pes.get(i).getTelefone()));
-                //cbxUf.setSelectedIndex();
-                txtCep.setText(String.valueOf(pes.get(i).getCep()));
-                //txtLimiteCred.setText(String.valueOf(.get(i).());
+                cbxUf.setSelectedItem(pes.get(i).getUf());
+                txtCep.setText(pes.get(i).getCep());
+                txtLimiteCred.setText(String.valueOf(((Cliente)pes.get(i)).getLimiteCred()));
                 posicao = i;
 
                 txtCpf.setEditable(false);
@@ -324,7 +324,7 @@ public class GuiCliente extends javax.swing.JFrame {
         cli.setCidade(txtCidade.getText());
         cli.setDdd(txtDdd.getText());
         cli.setTelefone(txtTelefone.getText());
-        cli.setUf(String.valueOf(cbxUf.getSelectedIndex()));
+        cli.setUf(String.valueOf(cbxUf.getSelectedItem()));
         cli.setCep(txtCep.getText());
         cli.setLimiteCred(Double.parseDouble(txtLimiteCred.getText()));
         pes.add(cli);
@@ -353,7 +353,7 @@ public class GuiCliente extends javax.swing.JFrame {
         cli.setCidade(txtCidade.getText());
         cli.setDdd(txtDdd.getText());
         cli.setTelefone(txtTelefone.getText());
-        //cli.setUf(String.valueOf(cbxUf.getSelectedIndex()));
+        cli.setUf(String.valueOf(cbxUf.getSelectedItem()));
         cli.setCep(txtCep.getText());
         cli.setLimiteCred(Double.parseDouble(txtLimiteCred.getText()));
         pes.set(posicao, cli);
