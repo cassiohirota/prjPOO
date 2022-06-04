@@ -8,6 +8,7 @@ package fatec.poo.view;
 import fatec.poo.model.Produto;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  * @author Aline Herculano
@@ -17,7 +18,8 @@ import java.util.ArrayList;
 public class GuiProduto extends javax.swing.JFrame {
 
     DecimalFormat df = new DecimalFormat("#,##0.00");
-    int i;
+    int i, posicao;
+    boolean listaVazia, elemEncontrado = false;
 
     /**
      * Creates new form GuiProduto
@@ -212,18 +214,30 @@ public class GuiProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        for(i = 0; i < prod.size(); i++){ //O jeito que fizemos para remover o objeto do ArrayList está certo?
-        prod.remove(i);
-        }
+        prod.remove(posicao);
+        txtCodigo.setText("");
+        txtDescricao.setText("");
+        txtQtdeDisp.setText("");
+        txtPrecoUnit.setText("");
+        txtEstoqueMin.setText("");
+        
+        txtCodigo.setEditable(true);
+
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(true);
+        btnExcluir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        Produto produto = new Produto(txtCodigo.getText(), txtDescricao.getName());
+        Produto produto = new Produto(txtCodigo.getText(), txtDescricao.getText());
         produto.setQtdeEstoque(Double.parseDouble(txtQtdeDisp.getText()));
         produto.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
         produto.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
         prod.add(produto);
 
+        
         txtCodigo.setText("");
         txtDescricao.setText("");
         txtQtdeDisp.setText("");
@@ -231,44 +245,69 @@ public class GuiProduto extends javax.swing.JFrame {
         txtEstoqueMin.setText("");
 
         btnConsultar.setEnabled(true);
-        btnIncluir.setEnabled(false);
+        btnIncluir.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
+
+        JOptionPane.showMessageDialog(null, "Produto registrado com sucesso!");
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
 
+        listaVazia = prod.isEmpty();
+        if (listaVazia == true) {
+
+            JOptionPane.showMessageDialog(null, "Lista vazia!");
+            txtDescricao.setEditable(true);
+            txtEstoqueMin.setEditable(true);
+            txtPrecoUnit.setEditable(true);
+            txtQtdeDisp.setEditable(true);
+
+            btnIncluir.setEnabled(true);
+            btnConsultar.setEnabled(false);
+        }
+
         for (i = 0; i < prod.size(); i++) {
 
-            if (prod.get(i).getCodigo().equals(txtCodigo.getText())) { // Como fazer a busca do elemento e comparar com o textbox?
+            if (txtCodigo.getText().equals(prod.get(i).getCodigo())) {
+
                 txtDescricao.setText(String.valueOf(prod.get(i).getDescricao()));
                 txtEstoqueMin.setText(String.valueOf(prod.get(i).getEstoqueMinimo()));
                 txtPrecoUnit.setText(String.valueOf(prod.get(i).getPreco()));
                 txtQtdeDisp.setText(String.valueOf(prod.get(i).getQtdeEstoque()));
+                posicao = i;
 
-                
-                btnConsultar.setEnabled(false);
+                txtCodigo.setEditable(false);
                 btnIncluir.setEnabled(false);
                 btnAlterar.setEnabled(true);
                 btnExcluir.setEnabled(true);
+                btnConsultar.setEnabled(false);
+                elemEncontrado = true;
+                break;
             } else {
-                txtDescricao.setEnabled(true);
-                txtEstoqueMin.setEnabled(true);
-                txtPrecoUnit.setEnabled(true);
-                txtQtdeDisp.setEnabled(true);
+
+                txtDescricao.setEditable(true);
+                txtEstoqueMin.setEditable(true);
+                txtPrecoUnit.setEditable(true);
+                txtQtdeDisp.setEditable(true);
 
                 btnConsultar.setEnabled(false);
                 btnIncluir.setEnabled(true);
             }
+
         }
+        if (elemEncontrado == false && listaVazia == false) {
+            JOptionPane.showMessageDialog(null, "Produto não registrado!");
+        }
+
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        Produto produto = new Produto(txtCodigo.getText(), txtDescricao.getName());
+        Produto produto = new Produto(txtCodigo.getText(), txtDescricao.getText());
         produto.setQtdeEstoque(Double.parseDouble(txtQtdeDisp.getText()));
         produto.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
         produto.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
-        prod.add(produto);
+        prod.set(posicao, produto);
 
         txtCodigo.setText("");
         txtDescricao.setText("");
@@ -276,10 +315,13 @@ public class GuiProduto extends javax.swing.JFrame {
         txtPrecoUnit.setText("");
         txtEstoqueMin.setText("");
 
+        txtCodigo.setEditable(true);
+
         btnConsultar.setEnabled(true);
-        btnIncluir.setEnabled(false);
+        btnIncluir.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
+        JOptionPane.showMessageDialog(null, "Produto alterado com sucesso!");
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     /**
