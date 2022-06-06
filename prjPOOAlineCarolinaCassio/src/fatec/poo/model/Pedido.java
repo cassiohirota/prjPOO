@@ -16,7 +16,7 @@ public class Pedido {
     private boolean situacao;
     private Cliente cliente;
     private Vendedor vendedor;
-    private ItemPedido itemPed;
+    private ArrayList<ItemPedido> itemPedido = new ArrayList<>();
     private ArrayList<Pessoa> pes = new ArrayList<Pessoa>();
 
     public Pedido(String numero, String dataEmissao) {
