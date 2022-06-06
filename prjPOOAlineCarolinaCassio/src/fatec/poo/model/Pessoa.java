@@ -5,7 +5,7 @@ package fatec.poo.model;
  * @author Carolina Santiago
  * @author Cassio Hiroshi
  */
-public abstract class Pessoa { // Essa Classe é abstrata?
+public class Pessoa { // Essa Classe é abstrata?
 
     private String cpf;
     private String nome;
