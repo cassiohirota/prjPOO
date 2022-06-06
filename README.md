@@ -15,11 +15,17 @@
 
 (Arrumado?)Vendedor:Não implementou a associação binária com Pedido
 
-Produto:não deve ser definido o apontamento para ItemPedido
+(Arrumado)Produto:não deve ser definido o apontamento para ItemPedido
 
-ItemPedido:Não fez a atribuilção do conteúdo do parâmetro produto parao atributo produto, a implementação da multiplicidade 1 (um) da associação binária com Pedido está incorreta, a implementação do método setProduto fora da especificação da modelagem
+ItemPedido:
+(Arrumado)- Não fez a atribuição do conteúdo do parâmetro produto parao atributo produto
+- A implementação da multiplicidade 1 (um) da associação binária com Pedido está incorreta
+- A implementação do método setProduto fora da especificação da modelagem
 
-Pedido:Não implementou aassociação binária com Vendedor, a implementação da multiplicidade 1..*da associação binária com ItemPedido está incorreta, a implementação da multiplicidade 1 (um) da associação binária com Cliente está incorreta
+Pedido:
+-Não implementou aassociação binária com Vendedor
+- A implementação da multiplicidade 1..*da associação binária com ItemPedido está incorreta
+- A implementação da multiplicidade 1 (um) da associação binária com Cliente está incorreta
 
 ## Utilidades
 https://www.javatpoint.com/how-to-remove-duplicates-from-arraylist-in-java
