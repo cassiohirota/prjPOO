@@ -34,14 +34,6 @@ public class ItemPedido {
         return qtdeVendida;
     }
 
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
     public void addPedido(Pedido f) {
         ped.add(f);
         f.setItemPed(this);
