@@ -13,7 +13,6 @@ public class Produto {
     private String unidadeMedida;
     private double preco;
     private double estoqueMinimo;
-    private ItemPedido itemPedido;
 
     public Produto(String codigo, String descricao) {
         this.codigo = codigo;
@@ -58,14 +57,6 @@ public class Produto {
 
     public double getEstoqueMinimo() {
         return estoqueMinimo;
-    }
-
-    public ItemPedido getItemPedido() {
-        return itemPedido;
-    }
-
-    public void setItemPedido(ItemPedido itemPedido) {
-        this.itemPedido = itemPedido;
     }
 
     public String getCodigo() {
