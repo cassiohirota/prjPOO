@@ -11,7 +11,7 @@ public class Vendedor extends Pessoa {
 
     private double salarioBase;
     private double taxaComissao;  // Taxa de Comissão é em porcentagem %. 
-    private ArrayList<Pedido> pedidos;
+    private ArrayList<Pedido> pedidos = new ArrayList<>();
 
     public Vendedor(String cpf, String nome, double salarioBase) {
         super(cpf, nome);
