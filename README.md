@@ -29,3 +29,8 @@ Pedido:
 
 ## Utilidades
 https://www.javatpoint.com/how-to-remove-duplicates-from-arraylist-in-java
+
+
+Como pegar o valor de outra classe e importar para a Gui Emitir Pedido para a tabela?
+Qual informação deve aparecer no label ao lado do textbox do cliente/Vendedor?
+Como importar linhas da tabela ao consultar pedido?
