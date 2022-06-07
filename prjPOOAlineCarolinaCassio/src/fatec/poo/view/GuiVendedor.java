@@ -309,7 +309,7 @@ public class GuiVendedor extends javax.swing.JFrame {
 
         for (i = 0; i < pes.size(); i++) {
 
-            if (txtCpf.getText().equals(pes.get(i).getCpf())) {
+            if (txtCpf.getText().equals(pes.get(i).getCpf()) && pes.get(i) instanceof Vendedor) {
 
                 txtNome.setText(String.valueOf(pes.get(i).getNome()));
                 txtEndereco.setText(String.valueOf(pes.get(i).getEndereco()));

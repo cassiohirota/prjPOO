@@ -272,7 +272,7 @@ public class GuiCliente extends javax.swing.JFrame {
 
         for (i = 0; i < pes.size(); i++) {
 
-            if (txtCpf.getText().equals(pes.get(i).getCpf())) {
+            if (txtCpf.getText().equals(pes.get(i).getCpf()) && pes.get(i) instanceof Cliente) {
 
                 txtNome.setText(String.valueOf(pes.get(i).getNome()));
                 txtEndereco.setText(String.valueOf(pes.get(i).getEndereco()));
