@@ -12,13 +12,12 @@ public class ItemPedido {
     private int sequencia;
     private double qtdeVendida;
     private Produto produto;
-    private ArrayList<Pedido> ped = new ArrayList<Pedido>();
+    private Pedido pedido;
 
     public ItemPedido(int sequencia, double qtdeVendida, Produto produto) {
         this.sequencia = sequencia;
         this.qtdeVendida = qtdeVendida;
         this.produto = produto;
-        ped = new ArrayList<Pedido>();
     }
 
     public void setQtdeVendida(double qtdeVendida) {
@@ -34,15 +33,16 @@ public class ItemPedido {
         return qtdeVendida;
     }
 
-    public Produto getProduto(){
+    public Produto getProduto() {
         return produto;
     }
-    
-    public void addPedido(Pedido f) {
-        ped.add(f);
-        f.setItemPed(this);
+
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void listarItemPedido() {
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
+
 }

@@ -16,13 +16,12 @@ public class Pedido {
     private boolean situacao;
     private Cliente cliente;
     private Vendedor vendedor;
-    private ArrayList<ItemPedido> itemPedido = new ArrayList<>();
-    private ArrayList<Pessoa> pes = new ArrayList<Pessoa>();
+    private ArrayList<ItemPedido> itemPed = new ArrayList<>();
 
     public Pedido(String numero, String dataEmissao) {
         this.numero = numero;
         this.dataEmissao = dataEmissao;
-        pes = new ArrayList<Pessoa>();
+        itemPed = new ArrayList<ItemPedido>();
     }
 
     public String getNumero() {
@@ -65,18 +64,10 @@ public class Pedido {
         this.situacao = situacao;
     }
 
-    public ItemPedido getItemPed() {
-        return itemPed;
-    }
-
-    public void setItemPed(ItemPedido itemPed) {
-        this.itemPed = itemPed;
-    }
-
-    public void addPessoa(Pessoa f) {
-        pes.add(f);
+    public void addItemPedido(ItemPedido f) {
+        itemPed.add(f);
         f.setPedido(this);
-        cliente.setLimiteCred(cliente.getLimiteCred() - itemPed.getQtdeVendida() * itemPed.getProduto().getPreco());
+        cliente.setLimiteDisp(cliente.getLimiteCred() - f.getQtdeVendida() * f.getProduto().getPreco());
     }
 
     public Cliente getCliente() {

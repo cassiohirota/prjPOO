@@ -53,6 +53,8 @@ public class GuiProduto extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        txtUniMed = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Produto");
@@ -129,14 +131,18 @@ public class GuiProduto extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Unidade de Medida");
+
+        txtUniMed.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
@@ -156,7 +162,7 @@ public class GuiProduto extends javax.swing.JFrame {
                                     .addComponent(jLabel5)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(txtEstoqueMin, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,7 +171,11 @@ public class GuiProduto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtUniMed, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -187,14 +197,18 @@ public class GuiProduto extends javax.swing.JFrame {
                     .addComponent(txtPrecoUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(txtEstoqueMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtUniMed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar)
                     .addComponent(btnIncluir)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
                     .addComponent(btnSair))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,6 +234,7 @@ public class GuiProduto extends javax.swing.JFrame {
         txtQtdeDisp.setText("");
         txtPrecoUnit.setText("");
         txtEstoqueMin.setText("");
+        txtUniMed.setText("");
         
         txtCodigo.setEditable(true);
 
@@ -235,6 +250,7 @@ public class GuiProduto extends javax.swing.JFrame {
         produto.setQtdeEstoque(Double.parseDouble(txtQtdeDisp.getText()));
         produto.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
         produto.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
+        produto.setUnidadeMedida(txtUniMed.getText());
         prod.add(produto);
 
         
@@ -243,6 +259,7 @@ public class GuiProduto extends javax.swing.JFrame {
         txtQtdeDisp.setText("");
         txtPrecoUnit.setText("");
         txtEstoqueMin.setText("");
+        txtUniMed.setText("");
 
         btnConsultar.setEnabled(true);
         btnIncluir.setEnabled(true);
@@ -262,6 +279,7 @@ public class GuiProduto extends javax.swing.JFrame {
             txtEstoqueMin.setEditable(true);
             txtPrecoUnit.setEditable(true);
             txtQtdeDisp.setEditable(true);
+            txtUniMed.setEditable(true);
 
             btnIncluir.setEnabled(true);
             btnConsultar.setEnabled(false);
@@ -275,6 +293,7 @@ public class GuiProduto extends javax.swing.JFrame {
                 txtEstoqueMin.setText(String.valueOf(prod.get(i).getEstoqueMinimo()));
                 txtPrecoUnit.setText(String.valueOf(prod.get(i).getPreco()));
                 txtQtdeDisp.setText(String.valueOf(prod.get(i).getQtdeEstoque()));
+                txtUniMed.setText(String.valueOf(prod.get(i).getUnidadeMedida()));
                 posicao = i;
 
                 txtCodigo.setEditable(false);
@@ -290,6 +309,7 @@ public class GuiProduto extends javax.swing.JFrame {
                 txtEstoqueMin.setEditable(true);
                 txtPrecoUnit.setEditable(true);
                 txtQtdeDisp.setEditable(true);
+                txtUniMed.setEditable(true);
 
                 btnConsultar.setEnabled(false);
                 btnIncluir.setEnabled(true);
@@ -307,6 +327,7 @@ public class GuiProduto extends javax.swing.JFrame {
         produto.setQtdeEstoque(Double.parseDouble(txtQtdeDisp.getText()));
         produto.setPreco(Double.parseDouble(txtPrecoUnit.getText()));
         produto.setEstoqueMinimo(Double.parseDouble(txtEstoqueMin.getText()));
+        produto.setUnidadeMedida(txtUniMed.getText());
         prod.set(posicao, produto);
 
         txtCodigo.setText("");
@@ -314,6 +335,7 @@ public class GuiProduto extends javax.swing.JFrame {
         txtQtdeDisp.setText("");
         txtPrecoUnit.setText("");
         txtEstoqueMin.setText("");
+        txtUniMed.setText("");
 
         txtCodigo.setEditable(true);
 
@@ -339,11 +361,13 @@ public class GuiProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtEstoqueMin;
     private javax.swing.JTextField txtPrecoUnit;
     private javax.swing.JTextField txtQtdeDisp;
+    private javax.swing.JTextField txtUniMed;
     // End of variables declaration//GEN-END:variables
     private ArrayList<Produto> prod;
 }
