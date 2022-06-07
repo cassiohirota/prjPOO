@@ -22,7 +22,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     boolean listaVazia, elemEncontrado;
     double valorTotal = 0;
 
-    public Double calcValorTotal(double valor) {        
+    public Double calcValorTotal(double valor) {
         valorTotal += valor;
         return valorTotal;
     }
@@ -531,25 +531,27 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
-        } 
+        }
         if (Double.parseDouble(txtQtdeVendida.getText()) > prod.get(posicaoProd).getQtdeEstoque()) {
             JOptionPane.showMessageDialog(null, "Estoque Insuficiente!");
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
-        } 
+        }
         if (limiteCli < (prod.get(posicaoProd).getPreco() * Double.parseDouble(txtQtdeVendida.getText()))) {
             JOptionPane.showMessageDialog(null, "Limite de Crédito Insuficiente!");
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
-        } 
-        
-        if(teste == true){
+        }
+
+        if (teste == true) {
             modTblItens.addRow(linha);
             numItem += Integer.parseInt(txtQtdeVendida.getText());
             lblQtdeItensPedido.setText(String.valueOf(numItem));
-            valorTotal += (subTotal + (subTotal * (((Vendedor) pes.get(posicaoPesVend)).getTaxaComissao()) / 100));
+            //valorTotal += (subTotal + (subTotal * ((((Vendedor) pes.get(posicaoPesVend)).getTaxaComissao()) / 100)));
+            JOptionPane.showMessageDialog(null, valorTotal);
+
             lblValorTotalPedido.setText(String.valueOf(valorTotal));
             calcValorTotal(valorTotal);
         }
