@@ -36,19 +36,3 @@ Como importar linhas da tabela ao consultar pedido?
 
             numItem -= Integer.parseInt(qtdeVendida);
             lblQtdeItensPedido.setText(String.valueOf(numItem));
-
-------------------------------------------------------------
-        //ItemPedido itemped = new ItemPedido(Integer.parseInt(txtNumPedido.getText()), Integer.parseInt(txtQtdeVendida.getText()), prod);
-        Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
-        pedido.setDataEmissao(txtDataPedido.getText());
-        if(cbxFormaPagamento.getSelectedIndex() == 0)
-            pedido.setFormaPagto(true); // A vista
-        else
-            pedido.setFormaPagto(false);//A prazo
-        
-        pedido.setCliente((((Cliente) pes.get(posicaoPesCli))));
-        pedido.setVendedor((((Vendedor) pes.get(posicaoPesVend))));
-        //Add valor Total
-        //Add quantidade VendTotal
-        //Adicinar Linhas da tabela
-        ped.add(pedido);
