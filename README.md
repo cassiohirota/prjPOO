@@ -34,3 +34,20 @@ https://www.javatpoint.com/how-to-remove-duplicates-from-arraylist-in-java
 Como pegar o valor de outra classe e importar para a Gui Emitir Pedido para a tabela?
 Qual informação deve aparecer no label ao lado do textbox do cliente/Vendedor?
 Como importar linhas da tabela ao consultar pedido?
+
+
+---------------------------------------------------------------------
+        double decremento;
+        String qtdeVendida = String.valueOf(modTblItens.getValueAt(tblPedido.getSelectedRow(), 3));
+
+        if (tblPedido.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null,
+                    "A linha não foi selecionada",
+                    "Aviso",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            modTblItens.removeRow(tblPedido.getSelectedRow());
+            JOptionPane.showMessageDialog(null, qtdeVendida);
+
+            numItem -= Integer.parseInt(qtdeVendida);
+            lblQtdeItensPedido.setText(String.valueOf(numItem));
