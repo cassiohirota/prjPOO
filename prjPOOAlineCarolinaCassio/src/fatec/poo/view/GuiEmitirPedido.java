@@ -19,12 +19,13 @@ import javax.swing.table.DefaultTableModel;
 public class GuiEmitirPedido extends javax.swing.JFrame {
 
     int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0;
+    String valorQtdeVendida;
     boolean listaVazia, elemEncontrado;
-    double valorTotal = 0;
+    double valorTotal = 0, calcValor = 0;
 
     public Double calcValorTotal(double valor) {
-        valorTotal += valor;
-        return valorTotal;
+        calcValor = valor + (valor * ((((Vendedor) pes.get(posicaoPesVend)).getTaxaComissao()) / 100));
+        return calcValor;
     }
 
     public GuiEmitirPedido(ArrayList<Pedido> cadPed, ArrayList<Produto> cadProd, ArrayList<Pessoa> cadCliVend) {
@@ -503,7 +504,19 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         //ItemPedido itemped = new ItemPedido(Integer.parseInt(txtNumPedido.getText()), Integer.parseInt(txtQtdeVendida.getText()), prod);
         Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
-        //pedido.setFormaPagto();
+        pedido.setDataEmissao(txtDataPedido.getText());
+        if (cbxFormaPagamento.getSelectedIndex() == 0) {
+            pedido.setFormaPagto(true); // A vista
+        } else {
+            pedido.setFormaPagto(false);//A prazo
+        }
+        pedido.setCliente((((Cliente) pes.get(posicaoPesCli))));
+        pedido.setVendedor((((Vendedor) pes.get(posicaoPesVend))));
+        //Add valor Total
+        //Add quantidade VendTotal
+        //Adicinar Linhas da tabela
+        ped.add(pedido);
+
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -515,8 +528,10 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+
         double subTotal = Double.parseDouble(txtQtdeVendida.getText()) * prod.get(posicaoProd).getPreco();
         double limiteCli = (((Cliente) pes.get(posicaoPesCli)).getLimiteDisp());
+        double totalPedTaxa;
         boolean teste = true;
         String linha[] = {
             txtCodProd.getText(),
@@ -549,16 +564,18 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             modTblItens.addRow(linha);
             numItem += Integer.parseInt(txtQtdeVendida.getText());
             lblQtdeItensPedido.setText(String.valueOf(numItem));
-            //valorTotal += (subTotal + (subTotal * ((((Vendedor) pes.get(posicaoPesVend)).getTaxaComissao()) / 100)));
-            JOptionPane.showMessageDialog(null, valorTotal);
+            valorTotal += subTotal;
+            totalPedTaxa = calcValorTotal(valorTotal);
 
-            lblValorTotalPedido.setText(String.valueOf(valorTotal));
-            calcValorTotal(valorTotal);
+            lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
+            txtQtdeVendida.setText("");
         }
     }//GEN-LAST:event_btnAddItemActionPerformed
 
     private void btnRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveItemActionPerformed
-        double decremento;
+        double decremento, totalPedTaxa;
+        String qtdeVendida = String.valueOf(modTblItens.getValueAt(tblPedido.getSelectedRow(), 3));
+
         if (tblPedido.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null,
                     "A linha não foi selecionada",
@@ -566,9 +583,10 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             modTblItens.removeRow(tblPedido.getSelectedRow());
-            numItem -= Integer.parseInt(txtQtdeVendida.getText());
+
+            numItem -= Integer.parseInt(qtdeVendida);
             lblQtdeItensPedido.setText(String.valueOf(numItem));
-            decremento = calcValorTotal(-(Double.parseDouble(txtQtdeVendida.getText()) * prod.get(posicaoProd).getPreco()));
+            decremento = calcValorTotal((Double.parseDouble(txtQtdeVendida.getText()) * prod.get(posicaoProd).getPreco()));
             lblValorTotalPedido.setText(String.valueOf(decremento));
         }
     }//GEN-LAST:event_btnRemoveItemActionPerformed
