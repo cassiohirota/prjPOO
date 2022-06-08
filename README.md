@@ -13,7 +13,7 @@
 
 ## Utilidades
 https://www.javatpoint.com/how-to-remove-duplicates-from-arraylist-in-java
-https://github.com/Vitormdias/prjPOO/blob/master/prjPOODeboraVitorLuiz/src/fatec/poo/view/GuiAlocarFiscal.java
+https://github.com/Vitormdias/prjPOO/blob/master/prjPOODeboraVitorLuiz/src/fatec/poo/view/GuiAlocarFiscal.java (Verificar a maneira que foi utilziada para pesquisar as linhas da tabela em btnPesquisarActionPerformed)
 
 Como pegar o valor de outra classe e importar para a Gui Emitir Pedido para a tabela?
 Qual informação deve aparecer no label ao lado do textbox do cliente/Vendedor?
