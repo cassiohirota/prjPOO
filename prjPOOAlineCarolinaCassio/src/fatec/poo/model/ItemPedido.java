@@ -33,6 +33,10 @@ public class ItemPedido {
         return qtdeVendida;
     }
 
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
     public Produto getProduto() {
         return produto;
     }

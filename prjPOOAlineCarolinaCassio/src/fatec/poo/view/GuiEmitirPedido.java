@@ -18,21 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GuiEmitirPedido extends javax.swing.JFrame {
 
-    private double totalPedTaxa;
-    int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0;
+    int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0, cont = 0;
     String valorQtdeVendida;
     boolean listaVazia, elemEncontrado;
-    double valorTotal = 0, calcValor = 0, subTotalConvertidoDouble = 0;
-
-    public double getTotalPedTaxa() {
-        return totalPedTaxa;
-    }
-
-    public void setTotalPedTaxa(double totalPedTaxa) {
-        this.totalPedTaxa = totalPedTaxa;
-    }
+    double totalPedTaxa, valorTotal = 0, subTotalConvertidoDouble = 0;
 
     public Double calcValorTotal(double valor) {
+        double calcValor = 0;
         calcValor = valor + (valor * ((((Vendedor) pes.get(posicaoPesVend)).getTaxaComissao()) / 100));
         return calcValor;
     }
@@ -511,8 +503,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        ItemPedido itemPedido = new ItemPedido(Integer.parseInt(txtNumPedido.getText()), Integer.parseInt(txtQtdeVendida.getText()), produto);
-        //itemPedido.setPedido();
+        ItemPedido itemPedido = new ItemPedido(cont, numItem, produto);
+        Produto produto = new Produto(txtCodProd.getText(), lblDesc.getText());
+        cont++;
+
+        itemPedido.setProduto(produto);
+
         Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
         pedido.setDataEmissao(txtDataPedido.getText());
         if (cbxFormaPagamento.getSelectedIndex() == 0) {
@@ -522,10 +518,28 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         }
         pedido.setCliente((((Cliente) pes.get(posicaoPesCli))));
         pedido.setVendedor((((Vendedor) pes.get(posicaoPesVend))));
-        //Add valor Total
-        //Add quantidade VendTotal
-        //Adicinar Linhas da tabela
+        pedido.addItemPedido(itemPedido);
+
         ped.add(pedido);
+
+        txtNumPedido.setEditable(true);
+        JOptionPane.showMessageDialog(null, "Pedido adicionado!");
+
+        txtNumPedido.setText("");
+        txtDataPedido.setText("");
+        cbxFormaPagamento.setSelectedIndex(0);
+        txtCpfCli.setText("");
+        lblCli.setText("");
+        txtCpfVend.setText("");
+        lblVend.setText("");
+        txtCodProd.setText("");
+        lblDesc.setText("");
+        txtQtdeVendida.setText("");
+        lblValorTotalPedido.setText("");
+        lblQtdeItensPedido.setText("");
+        for (int x = 0; x < modTblItens.getRowCount(); x++) {
+            modTblItens.removeRow(x);
+        }
 
     }//GEN-LAST:event_btnIncluirActionPerformed
 
@@ -534,21 +548,38 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-
+        ped.remove(posicaoPed);
+        
+        txtNumPedido.setText("");
+        txtDataPedido.setText("");
+        cbxFormaPagamento.setSelectedIndex(0);
+        txtCpfCli.setText("");
+        lblCli.setText("");
+        txtCpfVend.setText("");
+        lblVend.setText("");
+        txtCodProd.setText("");
+        lblDesc.setText("");
+        txtQtdeVendida.setText("");
+        lblValorTotalPedido.setText("");
+        lblQtdeItensPedido.setText("");
+        
+        txtNumPedido.setEditable(true);
+        
+        btnAlterar.setEnabled(false);
+        btnIncluir.setEnabled(false);
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
 
         double subTotal = Double.parseDouble(txtQtdeVendida.getText()) * prod.get(posicaoProd).getPreco();
         double limiteCli = (((Cliente) pes.get(posicaoPesCli)).getLimiteDisp());
-        double totalPedTaxa;
         boolean teste = true;
         String linha[] = {
             txtCodProd.getText(),
             lblDesc.getText(),
             String.valueOf(format.format(prod.get(posicaoProd).getPreco())),
             txtQtdeVendida.getText(),
-            String.valueOf(format.format(subTotal))
+            String.valueOf(subTotal)
         };
 
         if (Double.parseDouble(txtQtdeVendida.getText()) == 0) {
@@ -574,10 +605,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             modTblItens.addRow(linha);
             numItem += Integer.parseInt(txtQtdeVendida.getText());
             lblQtdeItensPedido.setText(String.valueOf(numItem));
+
             valorTotal += subTotal;
             totalPedTaxa = calcValorTotal(valorTotal);
-
-            setTotalPedTaxa(valorTotal);
 
             lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
             txtQtdeVendida.setText("");
@@ -585,9 +615,13 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddItemActionPerformed
 
     private void btnRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveItemActionPerformed
-        double decremento;
+        double valorTotalDecre;
         String qtdeVendida = String.valueOf(modTblItens.getValueAt(tblPedido.getSelectedRow(), 3));
-        String subTotalDecrementado = String.valueOf(modTblItens.getValueAt(tblPedido.getSelectedRow(), 4));
+        String subTotalDecrementado = (String) modTblItens.getValueAt(tblPedido.getSelectedRow(), 4);
+
+        valorTotal = valorTotal - Double.parseDouble(subTotalDecrementado);
+
+        valorTotalDecre = calcValorTotal(valorTotal);
 
         if (tblPedido.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null,
@@ -599,16 +633,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
             numItem -= Integer.parseInt(qtdeVendida);
             lblQtdeItensPedido.setText(String.valueOf(numItem));
-            
-            subTotalConvertidoDouble = Double.parseDouble(subTotalDecrementado);
-            JOptionPane.showMessageDialog(null, "subtotalDecre" + subTotalConvertidoDouble);
-            //decremento = getTotalPedTaxa();
-            //JOptionPane.showMessageDialog(null, "decrementorecebendo metodo get" + valorTotal);
-            valorTotal -= subTotalConvertidoDouble;
-            JOptionPane.showMessageDialog(null, "decremento apos subtrado" + valorTotal);
-            valorTotal = calcValorTotal(valorTotal);
-            JOptionPane.showMessageDialog(null, "decrementoapos soma de taxa" + valorTotal);
-            lblValorTotalPedido.setText(String.valueOf(valorTotal));
+
+            lblValorTotalPedido.setText(String.valueOf(valorTotalDecre));
         }
     }//GEN-LAST:event_btnRemoveItemActionPerformed
 
@@ -624,8 +650,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             txtNumPedido.setEditable(false);
 
             btnConsultarCliente.setEnabled(true);
-            btnAddItem.setEnabled(true);
-            btnRemoveItem.setEnabled(true);
         }
 
         for (i = 0; i < ped.size(); i++) {
@@ -634,11 +658,17 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
                 txtDataPedido.setText(String.valueOf(ped.get(i).getDataEmissao()));
                 cbxFormaPagamento.setSelectedItem(String.valueOf(ped.get(i).isFormaPagto()));
-                lblCli.setText(String.valueOf(ped.get(i).getCliente().getNome()));//Rever depois
+                txtCpfCli.setText(String.valueOf(ped.get(i).getCliente().getCpf()));
+                lblCli.setText(String.valueOf(ped.get(i).getCliente().getNome()));
+                txtCpfVend.setText(String.valueOf(ped.get(i).getVendedor().getCpf()));
                 lblVend.setText(String.valueOf(ped.get(i).getVendedor().getNome()));
-                //txtCodProd.setText(String.valueOf(ped.get(i).getI)); Como importar lista de produtos na tabela
+                //txtCodProd.setText(String.valueOf(ped.get(i).get)); Como importar lista de produtos na tabela?
+                //lblDesc.setText();
+                //txtQtdeVendida.setText();
                 posicaoPed = i;
 
+                lblQtdeItensPedido.setText(String.valueOf(numItem));
+                lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
                 for (int i = 0; i < itemPed.size(); i++) {
                     String linha[] = {
                         itemPed.get(i).getProduto().getCodigo(),
@@ -649,8 +679,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                     };
 
                     modTblItens.addRow(linha);
-                    //lblValorTotalPedido.setText();
-                    //lblQtdeItensPedido.setText();
                 }
                 txtNumPedido.setEditable(false);
                 btnIncluir.setEnabled(false);
