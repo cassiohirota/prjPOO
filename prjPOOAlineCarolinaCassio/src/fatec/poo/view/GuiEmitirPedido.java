@@ -7,6 +7,8 @@ import fatec.poo.model.Pessoa;
 import fatec.poo.model.Produto;
 import fatec.poo.model.Vendedor;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,8 +22,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
     int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0, cont = 0;
     String valorQtdeVendida;
-    boolean listaVazia, elemEncontrado;
-    double totalPedTaxa, valorTotal = 0, subTotalConvertidoDouble = 0;
+    boolean listaVazia, elemEncontrado, dataInserida = true;
+    double totalPedTaxa, valorTotal = 0;
 
     public Double calcValorTotal(double valor) {
         double calcValor = 0;
@@ -29,6 +31,21 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         return calcValor;
     }
 
+    public boolean validarData(String data){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+            
+            sdf.setLenient(false);
+           
+            sdf.parse(data);
+            return true;
+
+        }
+        catch(ParseException ex){
+                return false;
+        }    
+    }
+    
     public GuiEmitirPedido(ArrayList<Pedido> cadPed, ArrayList<Produto> cadProd, ArrayList<Pessoa> cadCliVend) {
         initComponents();
         ped = cadPed;
@@ -109,7 +126,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
         jLabel1.setText("Forma de Pagamento:");
 
-        cbxFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A vista", " " }));
+        cbxFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A vista", "A prazo" }));
+        cbxFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxFormaPagamentoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -495,7 +517,14 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDataPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataPedidoActionPerformed
-        // TODO add your handling code here:
+        boolean dataValida;
+        dataValida = validarData(txtCpfCli.getText());
+
+            if(dataValida == true){
+                pedido.setDataPagto(txtDataPedido.getText());
+                txtCpfCli.setEnabled(true);
+                btnConsultarCliente.setEnabled(true);
+            }
     }//GEN-LAST:event_txtDataPedidoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -504,13 +533,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         ItemPedido itemPedido = new ItemPedido(cont, numItem, produto);
-        Produto produto = new Produto(txtCodProd.getText(), lblDesc.getText());
         cont++;
 
-        itemPedido.setProduto(produto);
-
-        Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
-        pedido.setDataEmissao(txtDataPedido.getText());
+       
         if (cbxFormaPagamento.getSelectedIndex() == 0) {
             pedido.setFormaPagto(true); // A vista
         } else {
@@ -537,9 +562,15 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         txtQtdeVendida.setText("");
         lblValorTotalPedido.setText("");
         lblQtdeItensPedido.setText("");
-        for (int x = 0; x < modTblItens.getRowCount(); x++) {
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnIncluir.setEnabled(false);
+
+        modTblItens.setRowCount(0);
+        /*
+        for (int x = 0; x < modTblItens.getRowCount()+1; x++) {
             modTblItens.removeRow(x);
-        }
+        }*/
 
     }//GEN-LAST:event_btnIncluirActionPerformed
 
@@ -549,7 +580,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         ped.remove(posicaoPed);
-        
+
         txtNumPedido.setText("");
         txtDataPedido.setText("");
         cbxFormaPagamento.setSelectedIndex(0);
@@ -562,15 +593,22 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         txtQtdeVendida.setText("");
         lblValorTotalPedido.setText("");
         lblQtdeItensPedido.setText("");
-        
+
         txtNumPedido.setEditable(true);
-        
+
         btnAlterar.setEnabled(false);
         btnIncluir.setEnabled(false);
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
 
+        Produto produto = new Produto(txtCodProd.getText(), lblDesc.getText());
+        ItemPedido itemPedido = new ItemPedido(cont, Double.parseDouble(txtQtdeVendida.getText()), produto);
+        cont++;
+
+        //itemPedido.setProduto(produto);
+        //itemPed.add(itemPedido);
+        //pedido.addItemPedido(itemPedido);
         double subTotal = Double.parseDouble(txtQtdeVendida.getText()) * prod.get(posicaoProd).getPreco();
         double limiteCli = (((Cliente) pes.get(posicaoPesCli)).getLimiteDisp());
         boolean teste = true;
@@ -611,6 +649,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
             lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
             txtQtdeVendida.setText("");
+
         }
     }//GEN-LAST:event_btnAddItemActionPerformed
 
@@ -645,11 +684,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lista vazia!");
             txtDataPedido.setEditable(true);
             cbxFormaPagamento.setEditable(true);
-            txtCpfCli.setEditable(true);
 
             txtNumPedido.setEditable(false);
-
-            btnConsultarCliente.setEnabled(true);
         }
 
         for (i = 0; i < ped.size(); i++) {
@@ -657,14 +693,18 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             if (txtNumPedido.getText().equals(ped.get(i).getNumero())) {
 
                 txtDataPedido.setText(String.valueOf(ped.get(i).getDataEmissao()));
-                cbxFormaPagamento.setSelectedItem(String.valueOf(ped.get(i).isFormaPagto()));
+                if (ped.get(i).isFormaPagto() == true) {
+                    cbxFormaPagamento.setSelectedItem("A vista");
+                } else {
+                    cbxFormaPagamento.setSelectedItem("A prazo");
+                }
                 txtCpfCli.setText(String.valueOf(ped.get(i).getCliente().getCpf()));
                 lblCli.setText(String.valueOf(ped.get(i).getCliente().getNome()));
                 txtCpfVend.setText(String.valueOf(ped.get(i).getVendedor().getCpf()));
                 lblVend.setText(String.valueOf(ped.get(i).getVendedor().getNome()));
-                //txtCodProd.setText(String.valueOf(ped.get(i).get)); Como importar lista de produtos na tabela?
-                //lblDesc.setText();
-                //txtQtdeVendida.setText();
+                txtCodProd.setText(String.valueOf(prod.get(posicaoProd).getCodigo()));
+                lblDesc.setText(String.valueOf(prod.get(posicaoProd).getDescricao()));
+                //txtQtdeVendida.setText(String.valueOf(ped.get(i));
                 posicaoPed = i;
 
                 lblQtdeItensPedido.setText(String.valueOf(numItem));
@@ -687,22 +727,18 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 btnConsultarPedido.setEnabled(false);
                 elemEncontrado = true;
                 break;
-            } else {
-
-                txtDataPedido.setEditable(true);
-                cbxFormaPagamento.setEditable(true);
-                txtCpfCli.setEditable(true);
-
-                txtNumPedido.setEditable(false);
-
-                btnConsultarCliente.setEnabled(true);
-
-                btnConsultarPedido.setEnabled(false);
             }
-
         }
+
         if (elemEncontrado == false && listaVazia == false) {
             JOptionPane.showMessageDialog(null, "Pedido não registrado!");
+
+            txtDataPedido.setEditable(true);
+            cbxFormaPagamento.setEditable(true);
+
+            txtNumPedido.setEditable(false);
+
+            btnConsultarPedido.setEnabled(false);
         }
     }//GEN-LAST:event_btnConsultarPedidoActionPerformed
 
@@ -723,6 +759,13 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 btnConsultarVendedor.setEnabled(true);
                 elemEncontrado = true;
                 posicaoPesCli = i;
+                //Instanciação do objeto pedido
+                Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
+                
+                //associando cliente com pedido.
+                ((Cliente)pes.get(posicaoPesCli)).addPedido(pedido);
+                txtCpfCli.setEnabled(false);
+                btnConsultarCliente.setEnabled(false);
                 break;
             }
         }
@@ -748,6 +791,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 btnConsultarProduto.setEnabled(true);
                 elemEncontrado = true;
                 posicaoPesVend = i;
+                ((Vendedor) pes.get(posicaoPesVend)).addPedido(pedido);
+                txtCpfVend.setEnabled(false);
+                btnConsultarVendedor.setEnabled(false);
                 break;
             }
         }
@@ -784,6 +830,10 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             txtCodProd.setText("");
         }
     }//GEN-LAST:event_btnConsultarProdutoActionPerformed
+
+    private void cbxFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxFormaPagamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxFormaPagamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -832,7 +882,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private DefaultTableModel modTblItens;
     private DecimalFormat format = new DecimalFormat("#0.00");
     private Cliente cli;
+    private Pedido pedido;
     private Vendedor vend;
     private Produto produto;
-    //private ItemPedido itemPed;
+    //private ItemPedido itemPedido;
 }

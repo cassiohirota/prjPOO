@@ -35,7 +35,7 @@ public class Vendedor extends Pessoa {
         this.taxaComissao = taxaComissao;
     }
 
-    public void addPedidos(Pedido p) {
+    public void addPedido(Pedido p) {
         pedidos.add(p);
         p.setVendedor(this);
     }

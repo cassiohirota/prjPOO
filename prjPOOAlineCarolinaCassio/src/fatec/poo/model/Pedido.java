@@ -67,7 +67,7 @@ public class Pedido {
     public void addItemPedido(ItemPedido f) {
         itemPed.add(f);
         f.setPedido(this);
-        cliente.setLimiteDisp(cliente.getLimiteCred() - f.getQtdeVendida() * f.getProduto().getPreco());
+        //cliente.setLimiteDisp(cliente.getLimiteCred() - f.getQtdeVendida() * f.getProduto().getPreco());
     }
 
     public Cliente getCliente() {
@@ -84,6 +84,10 @@ public class Pedido {
 
     public void setVendedor(Vendedor vendedor) {
         this.vendedor = vendedor;
+    }
+
+    public ArrayList<ItemPedido> getItemPed() {
+        return itemPed;
     }
 
 }

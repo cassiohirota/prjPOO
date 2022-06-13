@@ -282,8 +282,17 @@ public class GuiCliente extends javax.swing.JFrame {
                 cbxUf.setSelectedItem(pes.get(i).getUf());
                 txtCep.setText(pes.get(i).getCep());
                 txtLimiteCred.setText(String.valueOf(((Cliente)pes.get(i)).getLimiteCred()));
-                lblLimiteDisp.setText(String.valueOf(((Cliente)pes.get(i)).getLimiteDisp()));
+                lblLimiteDisp.setText(String.valueOf(((Cliente) pes.get(i)).getLimiteDisp()));
                 posicao = i;
+				
+                txtNome.setEditable(true);
+                txtEndereco.setEditable(true);
+                txtCidade.setEditable(true);
+                txtDdd.setEditable(true);
+                txtTelefone.setEditable(true);
+                cbxUf.setEditable(true);
+                txtCep.setEditable(true);
+                txtLimiteCred.setEditable(true);
 
                 txtCpf.setEditable(false);
                 btnIncluir.setEnabled(false);
