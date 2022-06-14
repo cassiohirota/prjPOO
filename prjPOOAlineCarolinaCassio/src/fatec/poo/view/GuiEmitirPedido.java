@@ -23,28 +23,13 @@ import javax.swing.table.DefaultTableModel;
 public class GuiEmitirPedido extends javax.swing.JFrame {
 
     int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0, cont = 0;
-    String valorQtdeVendida;
-    boolean listaVazia, elemEncontrado, dataInserida = true;
+    boolean listaVazia, elemEncontrado;
     double totalPedTaxa, valorTotal = 0;
 
     public Double calcValorTotal(double valor) {
         double calcValor = 0;
         calcValor = valor + (valor * ((((Vendedor) pes.get(posicaoPesVend)).getTaxaComissao()) / 100));
         return calcValor;
-    }
-
-    public boolean validarData(String data) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-
-            sdf.setLenient(false);
-
-            sdf.parse(data);
-            return true;
-
-        } catch (ParseException ex) {
-            return false;
-        }
     }
 
     public GuiEmitirPedido(ArrayList<Pedido> cadPed, ArrayList<Produto> cadProd, ArrayList<Pessoa> cadCliVend) {
@@ -224,15 +209,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnConsultarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblCli, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtCpfCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(2, 2, 2)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConsultarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCli, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCpfCli, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -279,11 +261,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtCpfVend, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtCpfVend, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(btnConsultarVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblVend, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5))
+                        .addComponent(lblVend, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -428,7 +411,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                     .addComponent(btnAddItem, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemoveItem, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblValorTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -437,7 +420,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblQtdeItensPedido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
@@ -496,26 +479,26 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+                .addGap(38, 38, 38))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -524,25 +507,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
     private void txtDataPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataPedidoActionPerformed
 
-        
-        /*String data = txtDataPedido.getText();
-        do{
-        if (data.length() > 5) {
-            pedido.setDataPagto(txtDataPedido.getText());
-            txtCpfCli.setEnabled(true);
-            btnConsultarCliente.setEnabled(true);
-            break;
-        }
-        JOptionPane.showMessageDialog(null, data.length());
-        }while(true);
-        boolean dataValida;
-        dataValida = validarData(txtCpfCli.getText());
-
-            if(dataValida == true){
-                pedido.setDataPagto(txtDataPedido.getText());
-                txtCpfCli.setEnabled(true);
-                btnConsultarCliente.setEnabled(true);
-            }*/
     }//GEN-LAST:event_txtDataPedidoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -550,17 +514,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        ItemPedido itemPedido = new ItemPedido(cont, numItem, produto);
-        cont++;
 
         if (cbxFormaPagamento.getSelectedIndex() == 0) {
             pedido.setFormaPagto(true); // A vista
         } else {
             pedido.setFormaPagto(false);//A prazo
         }
-        pedido.setCliente((((Cliente) pes.get(posicaoPesCli))));
-        pedido.setVendedor((((Vendedor) pes.get(posicaoPesVend))));
-        pedido.addItemPedido(itemPedido);
 
         ped.add(pedido);
 
@@ -579,24 +538,50 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         txtQtdeVendida.setText("");
         lblValorTotalPedido.setText("");
         lblQtdeItensPedido.setText("");
+        btnConsultarPedido.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
         btnIncluir.setEnabled(false);
 
         modTblItens.setRowCount(0);
-        /*
-        for (int x = 0; x < modTblItens.getRowCount()+1; x++) {
-            modTblItens.removeRow(x);
-        }*/
 
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (cbxFormaPagamento.getSelectedIndex() == 0) {
+            pedido.setFormaPagto(true); // A vista
+        } else {
+            pedido.setFormaPagto(false);//A prazo
+        }
+        
+        ped.set(posicaoPed, pedido);
 
+        txtNumPedido.setEditable(true);
+        JOptionPane.showMessageDialog(null, "Pedido Alterado!");
+
+        txtNumPedido.setText("");
+        txtDataPedido.setText("");
+        cbxFormaPagamento.setSelectedIndex(0);
+        txtCpfCli.setText("");
+        lblCli.setText("");
+        txtCpfVend.setText("");
+        lblVend.setText("");
+        txtCodProd.setText("");
+        lblDesc.setText("");
+        txtQtdeVendida.setText("");
+        lblValorTotalPedido.setText("");
+        lblQtdeItensPedido.setText("");
+        btnConsultarPedido.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnIncluir.setEnabled(false);
+
+        modTblItens.setRowCount(0);
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         ped.remove(posicaoPed);
+        JOptionPane.showMessageDialog(null, "Pedido Excluido!");
 
         txtNumPedido.setText("");
         txtDataPedido.setText("");
@@ -612,23 +597,20 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         lblQtdeItensPedido.setText("");
 
         txtNumPedido.setEditable(true);
-
+        btnConsultarPedido.setEnabled(true);
+        btnExcluir.setEnabled(false);
         btnAlterar.setEnabled(false);
         btnIncluir.setEnabled(false);
+        
+        modTblItens.setRowCount(0);
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
 
-        Produto produto = new Produto(txtCodProd.getText(), lblDesc.getText());
-        ItemPedido itemPedido = new ItemPedido(cont, Double.parseDouble(txtQtdeVendida.getText()), produto);
-        cont++;
-
-        //itemPedido.setProduto(produto);
-        //itemPed.add(itemPedido);
-        //pedido.addItemPedido(itemPedido);
         double subTotal = Double.parseDouble(txtQtdeVendida.getText()) * prod.get(posicaoProd).getPreco();
         double limiteCli = (((Cliente) pes.get(posicaoPesCli)).getLimiteDisp());
         boolean teste = true;
+
         String linha[] = {
             txtCodProd.getText(),
             lblDesc.getText(),
@@ -642,32 +624,36 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
-        }
-        if (Double.parseDouble(txtQtdeVendida.getText()) > prod.get(posicaoProd).getQtdeEstoque()) {
+        } else if (Double.parseDouble(txtQtdeVendida.getText()) >= prod.get(posicaoProd).getQtdeEstoque()) {
             JOptionPane.showMessageDialog(null, "Estoque Insuficiente!");
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
+        } else {
+
+            if (limiteCli < subTotal) {
+                JOptionPane.showMessageDialog(null, "Limite de Crédito Insuficiente!");
+                txtCodProd.setText("");
+                txtQtdeVendida.setText("");
+                teste = false;
+            } else if (teste == true) {
+
+                itemPedido = new ItemPedido(cont, Double.parseDouble(txtQtdeVendida.getText()), prod.get(posicaoProd));
+                cont++;
+                pedido.addItemPedido(itemPedido);
+
+                modTblItens.addRow(linha);
+                numItem += Integer.parseInt(txtQtdeVendida.getText());
+                lblQtdeItensPedido.setText(String.valueOf(numItem));
+
+                valorTotal += subTotal;
+                totalPedTaxa = calcValorTotal(valorTotal);
+
+                lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
+                txtQtdeVendida.setText("");
+            }
         }
-        if (limiteCli < (prod.get(posicaoProd).getPreco() * Double.parseDouble(txtQtdeVendida.getText()))) {
-            JOptionPane.showMessageDialog(null, "Limite de Crédito Insuficiente!");
-            txtCodProd.setText("");
-            txtQtdeVendida.setText("");
-            teste = false;
-        }
 
-        if (teste == true) {
-            modTblItens.addRow(linha);
-            numItem += Integer.parseInt(txtQtdeVendida.getText());
-            lblQtdeItensPedido.setText(String.valueOf(numItem));
-
-            valorTotal += subTotal;
-            totalPedTaxa = calcValorTotal(valorTotal);
-
-            lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
-            txtQtdeVendida.setText("");
-
-        }
     }//GEN-LAST:event_btnAddItemActionPerformed
 
     private void btnRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveItemActionPerformed
@@ -699,10 +685,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         if (listaVazia == true) {
 
             JOptionPane.showMessageDialog(null, "Lista vazia!");
+            txtNumPedido.setEditable(false);
             txtDataPedido.setEditable(true);
             cbxFormaPagamento.setEditable(true);
-
-            txtNumPedido.setEditable(false);
         }
 
         for (i = 0; i < ped.size(); i++) {
@@ -721,23 +706,23 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 lblVend.setText(String.valueOf(ped.get(i).getVendedor().getNome()));
                 txtCodProd.setText(String.valueOf(prod.get(posicaoProd).getCodigo()));
                 lblDesc.setText(String.valueOf(prod.get(posicaoProd).getDescricao()));
-                //txtQtdeVendida.setText(String.valueOf(ped.get(i));
                 posicaoPed = i;
 
                 lblQtdeItensPedido.setText(String.valueOf(numItem));
                 lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
-                for (int i = 0; i < itemPed.size(); i++) {
-                    String linha[] = {
-                        itemPed.get(i).getProduto().getCodigo(),
-                        itemPed.get(i).getProduto().getDescricao(),
-                        itemPed.get(i).getProduto().getPreco() + "",
-                        itemPed.get(i).getQtdeVendida() + "",
-                        (itemPed.get(i).getQtdeVendida() * itemPed.get(i).getProduto().getPreco()) + ""
-                    };
+                for (int i = 0; i < ped.get(posicaoPed).getItemPed().size(); i++) {
+                    String linha[] = {ped.get(posicaoPed).getItemPed().get(i).getProduto().getCodigo(),
+                                      ped.get(posicaoPed).getItemPed().get(i).getProduto().getDescricao(),
+                                      ped.get(posicaoPed).getItemPed().get(i).getProduto().getPreco() + "",
+                                      ped.get(posicaoPed).getItemPed().get(i).getQtdeVendida() + "",
+                                      (ped.get(posicaoPed).getItemPed().get(i).getQtdeVendida() * ped.get(posicaoPed).getItemPed().get(i).getProduto().getPreco()) + ""};
 
                     modTblItens.addRow(linha);
                 }
+                txtCodProd.setEditable(true);
                 txtNumPedido.setEditable(false);
+
+                btnRemoveItem.setEnabled(true);
                 btnIncluir.setEnabled(false);
                 btnAlterar.setEnabled(true);
                 btnExcluir.setEnabled(true);
@@ -750,12 +735,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         if (elemEncontrado == false && listaVazia == false) {
             JOptionPane.showMessageDialog(null, "Pedido não registrado!");
 
+            txtNumPedido.setEditable(false);
             txtDataPedido.setEditable(true);
             cbxFormaPagamento.setEditable(true);
 
-            txtNumPedido.setEditable(false);
-
             btnConsultarPedido.setEnabled(false);
+            btnConsultarCliente.setEnabled(true);
         }
     }//GEN-LAST:event_btnConsultarPedidoActionPerformed
 
@@ -771,17 +756,20 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
             if (txtCpfCli.getText().equals(pes.get(i).getCpf()) && pes.get(i) instanceof Cliente) {
                 lblCli.setText(pes.get(i).getNome());
-                txtCpfCli.setEditable(false);
-                txtCpfVend.setEditable(true);
-                btnConsultarVendedor.setEnabled(true);
                 elemEncontrado = true;
                 posicaoPesCli = i;
+
                 //Instanciação do objeto pedido
-                Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
+                pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
 
                 //associando cliente com pedido.
                 ((Cliente) pes.get(posicaoPesCli)).addPedido(pedido);
-                txtCpfCli.setEnabled(false);
+
+                txtCpfCli.setEditable(false);
+                txtDataPedido.setEditable(false);
+                txtCpfVend.setEditable(true);
+                btnConsultarVendedor.setEnabled(true);
+
                 btnConsultarCliente.setEnabled(false);
                 break;
             }
@@ -804,13 +792,16 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
             if (txtCpfVend.getText().equals(pes.get(i).getCpf()) && pes.get(i) instanceof Vendedor) {
                 lblVend.setText(pes.get(i).getNome());
-                txtCodProd.setEditable(true);
-                btnConsultarProduto.setEnabled(true);
                 elemEncontrado = true;
                 posicaoPesVend = i;
+
                 ((Vendedor) pes.get(posicaoPesVend)).addPedido(pedido);
-                txtCpfVend.setEnabled(false);
+
+                txtCpfVend.setEditable(false);
+                txtCodProd.setEditable(true);
+
                 btnConsultarVendedor.setEnabled(false);
+                btnConsultarProduto.setEnabled(true);
                 break;
             }
         }
@@ -856,11 +847,17 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
         txtDataPedido.getDocument().addDocumentListener(new DocumentListener() {
 
-            public void changedUpdate(DocumentEvent e) {changed();}
+            public void changedUpdate(DocumentEvent e) {
+                changed();
+            }
 
-            public void removeUpdate(DocumentEvent e) {changed();}
+            public void removeUpdate(DocumentEvent e) {
+                changed();
+            }
 
-            public void insertUpdate(DocumentEvent e) {changed();}
+            public void insertUpdate(DocumentEvent e) {
+                changed();
+            }
 
             public void changed() {
                 if (txtDataPedido.getText().equals("")) {
@@ -924,5 +921,5 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private Pedido pedido;
     private Vendedor vend;
     private Produto produto;
-    //private ItemPedido itemPedido;
+    private ItemPedido itemPedido;
 }

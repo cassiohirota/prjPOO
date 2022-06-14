@@ -16,7 +16,7 @@ public class Pedido {
     private boolean situacao;
     private Cliente cliente;
     private Vendedor vendedor;
-    private ArrayList<ItemPedido> itemPed = new ArrayList<>();
+    private ArrayList<ItemPedido> itemPed;
 
     public Pedido(String numero, String dataEmissao) {
         this.numero = numero;
@@ -64,9 +64,9 @@ public class Pedido {
         this.situacao = situacao;
     }
 
-    public void addItemPedido(ItemPedido f) {
-        itemPed.add(f);
-        f.setPedido(this);
+    public void addItemPedido(ItemPedido ip) {
+        itemPed.add(ip);
+        ip.setPedido(this);
         //cliente.setLimiteDisp(cliente.getLimiteCred() - f.getQtdeVendida() * f.getProduto().getPreco());
     }
 
