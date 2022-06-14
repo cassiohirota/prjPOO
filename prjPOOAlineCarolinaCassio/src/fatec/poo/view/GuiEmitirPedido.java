@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,21 +33,20 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         return calcValor;
     }
 
-    public boolean validarData(String data){
+    public boolean validarData(String data) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
-            
+
             sdf.setLenient(false);
-           
+
             sdf.parse(data);
             return true;
 
+        } catch (ParseException ex) {
+            return false;
         }
-        catch(ParseException ex){
-                return false;
-        }    
     }
-    
+
     public GuiEmitirPedido(ArrayList<Pedido> cadPed, ArrayList<Produto> cadProd, ArrayList<Pessoa> cadCliVend) {
         initComponents();
         ped = cadPed;
@@ -121,6 +122,11 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         txtDataPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDataPedidoActionPerformed(evt);
+            }
+        });
+        txtDataPedido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDataPedidoKeyPressed(evt);
             }
         });
 
@@ -517,6 +523,18 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDataPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataPedidoActionPerformed
+
+        
+        /*String data = txtDataPedido.getText();
+        do{
+        if (data.length() > 5) {
+            pedido.setDataPagto(txtDataPedido.getText());
+            txtCpfCli.setEnabled(true);
+            btnConsultarCliente.setEnabled(true);
+            break;
+        }
+        JOptionPane.showMessageDialog(null, data.length());
+        }while(true);
         boolean dataValida;
         dataValida = validarData(txtCpfCli.getText());
 
@@ -524,7 +542,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 pedido.setDataPagto(txtDataPedido.getText());
                 txtCpfCli.setEnabled(true);
                 btnConsultarCliente.setEnabled(true);
-            }
+            }*/
     }//GEN-LAST:event_txtDataPedidoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -535,7 +553,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         ItemPedido itemPedido = new ItemPedido(cont, numItem, produto);
         cont++;
 
-       
         if (cbxFormaPagamento.getSelectedIndex() == 0) {
             pedido.setFormaPagto(true); // A vista
         } else {
@@ -761,9 +778,9 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 posicaoPesCli = i;
                 //Instanciação do objeto pedido
                 Pedido pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
-                
+
                 //associando cliente com pedido.
-                ((Cliente)pes.get(posicaoPesCli)).addPedido(pedido);
+                ((Cliente) pes.get(posicaoPesCli)).addPedido(pedido);
                 txtCpfCli.setEnabled(false);
                 btnConsultarCliente.setEnabled(false);
                 break;
@@ -834,6 +851,28 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     private void cbxFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxFormaPagamentoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxFormaPagamentoActionPerformed
+
+    private void txtDataPedidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataPedidoKeyPressed
+
+        txtDataPedido.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void changedUpdate(DocumentEvent e) {changed();}
+
+            public void removeUpdate(DocumentEvent e) {changed();}
+
+            public void insertUpdate(DocumentEvent e) {changed();}
+
+            public void changed() {
+                if (txtDataPedido.getText().equals("")) {
+                    txtCpfCli.setEditable(false);
+                    btnConsultarCliente.setEnabled(false);
+                } else {
+                    txtCpfCli.setEditable(true);
+                    btnConsultarCliente.setEnabled(true);
+                }
+            }
+        });
+    }//GEN-LAST:event_txtDataPedidoKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
