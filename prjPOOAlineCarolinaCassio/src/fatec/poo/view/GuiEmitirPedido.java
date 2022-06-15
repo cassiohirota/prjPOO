@@ -7,7 +7,6 @@ import fatec.poo.model.Pessoa;
 import fatec.poo.model.Produto;
 import fatec.poo.model.Vendedor;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -23,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class GuiEmitirPedido extends javax.swing.JFrame {
 
     int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0, cont = 0;
-    boolean listaVazia, elemEncontrado;
+    boolean listaVazia, elemEncontradoPed, elemEncontradoCli, elemEncontradoVend, elemEncontradoProd;
     double totalPedTaxa, valorTotal = 0;
 
     public Double calcValorTotal(double valor) {
@@ -118,6 +117,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         jLabel1.setText("Forma de Pagamento:");
 
         cbxFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A vista", "A prazo" }));
+        cbxFormaPagamento.setEnabled(false);
         cbxFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxFormaPagamentoActionPerformed(evt);
@@ -538,7 +538,17 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         txtQtdeVendida.setText("");
         lblValorTotalPedido.setText("");
         lblQtdeItensPedido.setText("");
+
+        cbxFormaPagamento.setEnabled(false);
+        txtCpfCli.setEditable(false);
+        txtCodProd.setEditable(false);
+        txtQtdeVendida.setEditable(false);
+
         btnConsultarPedido.setEnabled(true);
+        btnConsultarCliente.setEnabled(false);
+        btnConsultarProduto.setEnabled(false);
+        btnAddItem.setEnabled(false);
+        btnRemoveItem.setEnabled(false);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
         btnIncluir.setEnabled(false);
@@ -553,7 +563,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         } else {
             pedido.setFormaPagto(false);//A prazo
         }
-        
+
         ped.set(posicaoPed, pedido);
 
         txtNumPedido.setEditable(true);
@@ -571,7 +581,17 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         txtQtdeVendida.setText("");
         lblValorTotalPedido.setText("");
         lblQtdeItensPedido.setText("");
+
+        cbxFormaPagamento.setEnabled(false);
+        txtCpfCli.setEditable(false);
+        txtCodProd.setEditable(false);
+        txtQtdeVendida.setEditable(false);
+
         btnConsultarPedido.setEnabled(true);
+        btnConsultarCliente.setEnabled(false);
+        btnConsultarProduto.setEnabled(false);
+        btnAddItem.setEnabled(false);
+        btnRemoveItem.setEnabled(false);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
         btnIncluir.setEnabled(false);
@@ -597,11 +617,20 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         lblQtdeItensPedido.setText("");
 
         txtNumPedido.setEditable(true);
+        cbxFormaPagamento.setEnabled(false);
+        txtCpfCli.setEditable(false);
+        txtCodProd.setEditable(false);
+        txtQtdeVendida.setEditable(false);
+
         btnConsultarPedido.setEnabled(true);
-        btnExcluir.setEnabled(false);
+        btnConsultarCliente.setEnabled(false);
+        btnConsultarProduto.setEnabled(false);
+        btnAddItem.setEnabled(false);
+        btnRemoveItem.setEnabled(false);
         btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
         btnIncluir.setEnabled(false);
-        
+
         modTblItens.setRowCount(0);
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -620,19 +649,19 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         };
 
         if (Double.parseDouble(txtQtdeVendida.getText()) == 0) {
-            JOptionPane.showMessageDialog(null, "Quantidade Vendida não pode ser zero!");
+            JOptionPane.showMessageDialog(null, "Quantidade Vendida não pode ser zero!", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
         } else if (Double.parseDouble(txtQtdeVendida.getText()) >= prod.get(posicaoProd).getQtdeEstoque()) {
-            JOptionPane.showMessageDialog(null, "Estoque Insuficiente!");
+            JOptionPane.showMessageDialog(null, "Estoque Insuficiente!", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCodProd.setText("");
             txtQtdeVendida.setText("");
             teste = false;
         } else {
 
             if (limiteCli < subTotal) {
-                JOptionPane.showMessageDialog(null, "Limite de Crédito Insuficiente!");
+                JOptionPane.showMessageDialog(null, "Limite de Crédito Insuficiente!", "Atenção", JOptionPane.ERROR_MESSAGE);
                 txtCodProd.setText("");
                 txtQtdeVendida.setText("");
                 teste = false;
@@ -671,6 +700,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                     "Aviso",
                     JOptionPane.ERROR_MESSAGE);
         } else {
+            itemPed.remove(tblPedido.getSelectedRow());
+            
             modTblItens.removeRow(tblPedido.getSelectedRow());
 
             numItem -= Integer.parseInt(qtdeVendida);
@@ -687,7 +718,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lista vazia!");
             txtNumPedido.setEditable(false);
             txtDataPedido.setEditable(true);
-            cbxFormaPagamento.setEditable(true);
+            cbxFormaPagamento.setEnabled(true);
         }
 
         for (i = 0; i < ped.size(); i++) {
@@ -712,32 +743,34 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
                 for (int i = 0; i < ped.get(posicaoPed).getItemPed().size(); i++) {
                     String linha[] = {ped.get(posicaoPed).getItemPed().get(i).getProduto().getCodigo(),
-                                      ped.get(posicaoPed).getItemPed().get(i).getProduto().getDescricao(),
-                                      ped.get(posicaoPed).getItemPed().get(i).getProduto().getPreco() + "",
-                                      ped.get(posicaoPed).getItemPed().get(i).getQtdeVendida() + "",
-                                      (ped.get(posicaoPed).getItemPed().get(i).getQtdeVendida() * ped.get(posicaoPed).getItemPed().get(i).getProduto().getPreco()) + ""};
+                        ped.get(posicaoPed).getItemPed().get(i).getProduto().getDescricao(),
+                        ped.get(posicaoPed).getItemPed().get(i).getProduto().getPreco() + "",
+                        ped.get(posicaoPed).getItemPed().get(i).getQtdeVendida() + "",
+                        (ped.get(posicaoPed).getItemPed().get(i).getQtdeVendida() * ped.get(posicaoPed).getItemPed().get(i).getProduto().getPreco()) + ""};
 
                     modTblItens.addRow(linha);
                 }
                 txtCodProd.setEditable(true);
                 txtNumPedido.setEditable(false);
+                txtCpfCli.setEditable(false);
 
                 btnRemoveItem.setEnabled(true);
                 btnIncluir.setEnabled(false);
                 btnAlterar.setEnabled(true);
                 btnExcluir.setEnabled(true);
                 btnConsultarPedido.setEnabled(false);
-                elemEncontrado = true;
+                btnConsultarCliente.setEnabled(false);
+                elemEncontradoPed = true;
                 break;
             }
         }
 
-        if (elemEncontrado == false && listaVazia == false) {
-            JOptionPane.showMessageDialog(null, "Pedido não registrado!");
+        if (elemEncontradoPed == false && listaVazia == false) {
+            JOptionPane.showMessageDialog(null, "Pedido não registrado!", "Atenção", JOptionPane.ERROR_MESSAGE);
 
             txtNumPedido.setEditable(false);
             txtDataPedido.setEditable(true);
-            cbxFormaPagamento.setEditable(true);
+            cbxFormaPagamento.setEnabled(true);
 
             btnConsultarPedido.setEnabled(false);
             btnConsultarCliente.setEnabled(true);
@@ -749,20 +782,20 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         listaVazia = pes.isEmpty();
         if (listaVazia == true) {
 
-            JOptionPane.showMessageDialog(null, "Nenhum Cliente cadastrado");
+            JOptionPane.showMessageDialog(null, "Nenhum Cliente cadastrado", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCpfCli.setText("");
         }
         for (i = 0; i < pes.size(); i++) {
 
             if (txtCpfCli.getText().equals(pes.get(i).getCpf()) && pes.get(i) instanceof Cliente) {
                 lblCli.setText(pes.get(i).getNome());
-                elemEncontrado = true;
+                elemEncontradoCli = true;
                 posicaoPesCli = i;
 
-                //Instanciação do objeto pedido
+                //Instanciação do objeto pedido conforme mencionado pelo professor.
                 pedido = new Pedido(txtNumPedido.getText(), txtDataPedido.getText());
 
-                //associando cliente com pedido.
+                //associando cliente com pedido conforme mencionado pelo professor.
                 ((Cliente) pes.get(posicaoPesCli)).addPedido(pedido);
 
                 txtCpfCli.setEditable(false);
@@ -774,8 +807,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 break;
             }
         }
-        if (elemEncontrado == false && listaVazia == false) {
-            JOptionPane.showMessageDialog(null, "Cliente não existe!");
+        if (elemEncontradoCli == false && listaVazia == false) {
+            JOptionPane.showMessageDialog(null, "Cliente não existe!", "Atenção", JOptionPane.ERROR_MESSAGE);
             lblCli.setText("");
         }
     }//GEN-LAST:event_btnConsultarClienteActionPerformed
@@ -785,14 +818,14 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         listaVazia = pes.isEmpty();
         if (listaVazia == true) {
 
-            JOptionPane.showMessageDialog(null, "Nenhum Vendedor cadastrado");
+            JOptionPane.showMessageDialog(null, "Nenhum Vendedor cadastrado", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCpfVend.setText("");
         }
         for (i = 0; i < pes.size(); i++) {
 
             if (txtCpfVend.getText().equals(pes.get(i).getCpf()) && pes.get(i) instanceof Vendedor) {
                 lblVend.setText(pes.get(i).getNome());
-                elemEncontrado = true;
+                elemEncontradoVend = true;
                 posicaoPesVend = i;
 
                 ((Vendedor) pes.get(posicaoPesVend)).addPedido(pedido);
@@ -805,36 +838,37 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 break;
             }
         }
-        if (elemEncontrado == false && listaVazia == false) {
-            JOptionPane.showMessageDialog(null, "Vendedor não existe!");
+        if (elemEncontradoVend == false && listaVazia == false) {
+            JOptionPane.showMessageDialog(null, "Vendedor não existe!", "Atenção", JOptionPane.ERROR_MESSAGE);
             lblVend.setText("");
         }
     }//GEN-LAST:event_btnConsultarVendedorActionPerformed
 
     private void btnConsultarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarProdutoActionPerformed
 
-        btnAddItem.setEnabled(true);
-        btnRemoveItem.setEnabled(true);
-
         listaVazia = pes.isEmpty();
         if (listaVazia == true) {
 
-            JOptionPane.showMessageDialog(null, "Nenhum Produto cadastrado");
+            JOptionPane.showMessageDialog(null, "Nenhum Produto cadastrado", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCodProd.setText("");
         }
         for (i = 0; i < prod.size(); i++) {
 
             if (txtCodProd.getText().equals(prod.get(i).getCodigo())) {
                 lblDesc.setText(prod.get(i).getDescricao());
-                txtQtdeVendida.setEditable(true);
                 posicaoProd = i;
+                elemEncontradoProd = true;               
+                
+                txtQtdeVendida.setEditable(true);
+                
                 btnIncluir.setEnabled(true);
-                elemEncontrado = true;
+                btnAddItem.setEnabled(true);
+                btnRemoveItem.setEnabled(true);
                 break;
             }
         }
-        if (elemEncontrado == false && listaVazia == false) {
-            JOptionPane.showMessageDialog(null, "Produto não existe!");
+        if (elemEncontradoProd == false && listaVazia == false) {
+            JOptionPane.showMessageDialog(null, "Produto não existe!", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCodProd.setText("");
         }
     }//GEN-LAST:event_btnConsultarProdutoActionPerformed
@@ -860,6 +894,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             }
 
             public void changed() {
+                
                 if (txtDataPedido.getText().equals("")) {
                     txtCpfCli.setEditable(false);
                     btnConsultarCliente.setEnabled(false);

@@ -11,7 +11,7 @@ public class Cliente extends Pessoa {
 
     private double limiteCred;
     private double limiteDisp;
-    private ArrayList<Pedido> pedidos = new ArrayList<>();
+    private ArrayList<Pedido> pedidos;
 
     public Cliente(String cpf, String nome, double limiteCred) {
         super(cpf, nome);
