@@ -514,6 +514,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        
+        double valorDesc = ((((Cliente) pes.get(posicaoPesCli)).getLimiteCred()) - totalPedTaxa);
 
         if (cbxFormaPagamento.getSelectedIndex() == 0) {
             pedido.setFormaPagto(true); // A vista
@@ -522,6 +524,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         }
 
         ped.add(pedido);
+
+        ((Cliente) pes.get(posicaoPesCli)).setLimiteDisp(valorDesc);
 
         txtNumPedido.setEditable(true);
         JOptionPane.showMessageDialog(null, "Pedido adicionado!");
@@ -600,7 +604,10 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (posicaoPed >=0){       
         ped.remove(posicaoPed);
+        posicaoPed = -1;}
+        
         JOptionPane.showMessageDialog(null, "Pedido Excluido!");
 
         txtNumPedido.setText("");
@@ -700,7 +707,7 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                     "Aviso",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            itemPed.remove(tblPedido.getSelectedRow());
+            //itemPed.remove(tblPedido.getSelectedRow());
             
             modTblItens.removeRow(tblPedido.getSelectedRow());
 
