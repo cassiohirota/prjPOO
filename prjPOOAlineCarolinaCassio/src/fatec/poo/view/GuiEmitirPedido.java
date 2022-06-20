@@ -21,9 +21,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GuiEmitirPedido extends javax.swing.JFrame {
 
-    int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0, cont = 0;
-    boolean listaVazia, elemEncontradoPed, elemEncontradoCli, elemEncontradoVend, elemEncontradoProd, valPedFinal = false;
-    double totalPedTaxa, valorTotalDecre, valorTotal = 0;
+    int i, posicaoPesCli, posicaoPesVend, posicaoPed, posicaoProd, numItem = 0, cont = 0, somaItensPedido = 0;
+    boolean itemRemoveConsulta = false; // Verifica se a remoção do item foi feita após a consulta do pedido.
+    double totalPedTaxa, valorTotalDecre, valorTotal = 0, somaPedido = 0;
 
     public Double calcValorTotal(double valor) {
         double calcValor = 0;
@@ -103,11 +103,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        txtDataPedido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDataPedidoActionPerformed(evt);
-            }
-        });
         txtDataPedido.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtDataPedidoKeyPressed(evt);
@@ -118,11 +113,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
         cbxFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A vista", "A prazo" }));
         cbxFormaPagamento.setEnabled(false);
-        cbxFormaPagamento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxFormaPagamentoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -505,17 +495,19 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDataPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataPedidoActionPerformed
-
-    }//GEN-LAST:event_txtDataPedidoActionPerformed
-
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
 
-        double valorDesc = ((((Cliente) pessoas.get(posicaoPesCli)).getLimiteCred()) - totalPedTaxa);
+        //Subtraindo o valor total do pedido com o limite disponível.
+        double valorDesc = ((((Cliente) pessoas.get(posicaoPesCli)).getLimiteDisp()) - calcValorTotal(valorTotal));
+        ((Cliente) pessoas.get(posicaoPesCli)).setLimiteDisp(valorDesc);
+
+        //Subtraindo a quantidade vendida com o estoque.
+        double baixaEstoque = produtos.get(posicaoProd).getQtdeEstoque() - itemPedido.getQtdeVendida();
+        produtos.get(posicaoProd).setQtdeEstoque(baixaEstoque);
 
         if (cbxFormaPagamento.getSelectedIndex() == 0) {
             pedido.setFormaPagto(true); // A vista
@@ -525,7 +517,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
 
         pedidos.add(pedido);
 
-        ((Cliente) pessoas.get(posicaoPesCli)).setLimiteDisp(valorDesc);
 
         txtNumPedido.setEditable(true);
         JOptionPane.showMessageDialog(null, "Pedido adicionado!");
@@ -568,7 +559,14 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             pedido.setFormaPagto(false);//A prazo
         }
 
+        //altera os valores com "Arraylist".set("posicao", "objeto")
         pedidos.set(posicaoPed, pedido);
+
+        somaPedido = 0;
+        somaItensPedido = 0;
+        valorTotal = 0;
+        numItem = 0;
+        valorTotalDecre = 0;
 
         txtNumPedido.setEditable(true);
         JOptionPane.showMessageDialog(null, "Pedido Alterado!");
@@ -607,6 +605,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         pedidos.remove(posicaoPed);
         JOptionPane.showMessageDialog(null, "Pedido Excluido!");
 
+        somaPedido = 0;
+        somaItensPedido = 0;
+        valorTotal = 0;
+        numItem = 0;
+        valorTotalDecre = 0;
+
         txtNumPedido.setText("");
         txtDataPedido.setText("");
         cbxFormaPagamento.setSelectedIndex(0);
@@ -635,10 +639,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
         btnExcluir.setEnabled(false);
         btnIncluir.setEnabled(false);
 
-        numItem = 0;
-        totalPedTaxa = 0;
-        valorTotalDecre = 0;
-        
         modTblItens.setRowCount(0);
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -684,9 +684,8 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 lblQtdeItensPedido.setText(String.valueOf(numItem));
 
                 valorTotal += subTotal;
-                totalPedTaxa = calcValorTotal(valorTotal);
 
-                lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
+                lblValorTotalPedido.setText(String.valueOf(calcValorTotal(valorTotal)));
                 txtQtdeVendida.setText("");
 
             }
@@ -695,7 +694,6 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddItemActionPerformed
 
     private void btnRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveItemActionPerformed
-
         String qtdeVendida = (String) modTblItens.getValueAt(tblPedido.getSelectedRow(), 3);
         String subTotalDecrementado = (String) modTblItens.getValueAt(tblPedido.getSelectedRow(), 4);
         valorTotal = valorTotal - Double.parseDouble(subTotalDecrementado);
@@ -706,6 +704,16 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                     "A linha não foi selecionada",
                     "Aviso",
                     JOptionPane.ERROR_MESSAGE);
+        } else if (itemRemoveConsulta == true) {
+            pedido.getItemPed().remove(tblPedido.getSelectedRow());
+            modTblItens.removeRow(tblPedido.getSelectedRow());
+
+            somaItensPedido -= Double.parseDouble(qtdeVendida);
+            somaPedido -= Double.parseDouble(subTotalDecrementado);
+
+            lblQtdeItensPedido.setText(String.valueOf(somaItensPedido));
+            lblValorTotalPedido.setText(String.valueOf(calcValorTotal(somaPedido)));
+            itemRemoveConsulta = false; // Volta ao estado original.
         } else {
 
             pedido.getItemPed().remove(tblPedido.getSelectedRow());
@@ -715,13 +723,15 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             numItem -= Double.parseDouble(qtdeVendida);
             lblQtdeItensPedido.setText(String.valueOf(numItem));
             lblValorTotalPedido.setText(String.valueOf(valorTotalDecre));
-            valPedFinal = true;
         }
     }//GEN-LAST:event_btnRemoveItemActionPerformed
 
     private void btnConsultarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarPedidoActionPerformed
-        listaVazia = pedidos.isEmpty();
-        if (listaVazia == true) {
+        String incrementoTotalPed, incrementoItens;
+        boolean listaVaziaPedido, elemEncontradoPed = false;
+
+        listaVaziaPedido = pedidos.isEmpty();
+        if (listaVaziaPedido == true) {
 
             JOptionPane.showMessageDialog(null, "Lista vazia!");
             txtNumPedido.setEditable(false);
@@ -747,17 +757,11 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 lblDesc.setText(String.valueOf(produtos.get(posicaoProd).getDescricao()));
                 posicaoPed = i;
 
-                lblQtdeItensPedido.setText(String.valueOf(numItem));
-                if (valPedFinal = true) {
-                    lblValorTotalPedido.setText(String.valueOf(valorTotalDecre));
-                } else {
-                    lblValorTotalPedido.setText(String.valueOf(totalPedTaxa));
-                }
-
                 for (int i = 0; i < pedidos.get(posicaoPed).getItemPed().size(); i++) {
                     double preco = pedidos.get(posicaoPed).getItemPed().get(i).getProduto().getPreco();
                     double qtdeVend = pedidos.get(posicaoPed).getItemPed().get(i).getQtdeVendida();
                     double subT = (pedidos.get(posicaoPed).getItemPed().get(i).getQtdeVendida() * pedidos.get(posicaoPed).getItemPed().get(i).getProduto().getPreco());
+
                     String linha[] = {pedidos.get(posicaoPed).getItemPed().get(i).getProduto().getCodigo(),
                         pedidos.get(posicaoPed).getItemPed().get(i).getProduto().getDescricao(),
                         String.valueOf(preco),
@@ -765,7 +769,19 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                         String.valueOf(subT)};
 
                     modTblItens.addRow(linha);
+
                 }
+
+                for (int y = 0; y < tblPedido.getRowCount(); y++) {
+                    incrementoTotalPed = (String) modTblItens.getValueAt(y, 4);
+                    incrementoItens = (String) modTblItens.getValueAt(y, 3);
+                    somaPedido += Double.parseDouble(incrementoTotalPed);
+                    somaItensPedido += Double.parseDouble(incrementoItens);
+                }
+
+                lblQtdeItensPedido.setText(String.valueOf(somaItensPedido));
+                lblValorTotalPedido.setText(String.valueOf(calcValorTotal(somaPedido)));
+
                 txtCodProd.setEditable(true);
                 txtNumPedido.setEditable(false);
                 txtCpfCli.setEditable(false);
@@ -777,11 +793,12 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 btnConsultarPedido.setEnabled(false);
                 btnConsultarCliente.setEnabled(false);
                 elemEncontradoPed = true;
+                itemRemoveConsulta = true;
                 break;
             }
         }
 
-        if (elemEncontradoPed == false && listaVazia == false) {
+        if (elemEncontradoPed == false && listaVaziaPedido == false) {
             JOptionPane.showMessageDialog(null, "Pedido não registrado!", "Atenção", JOptionPane.ERROR_MESSAGE);
 
             txtNumPedido.setEditable(false);
@@ -791,12 +808,14 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
             btnConsultarPedido.setEnabled(false);
             btnConsultarCliente.setEnabled(true);
         }
+
     }//GEN-LAST:event_btnConsultarPedidoActionPerformed
 
     private void btnConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarClienteActionPerformed
+        boolean listaVaziaCli, elemEncontradoCli = false;
 
-        listaVazia = pessoas.isEmpty();
-        if (listaVazia == true) {
+        listaVaziaCli = pessoas.isEmpty();
+        if (listaVaziaCli == true) {
 
             JOptionPane.showMessageDialog(null, "Nenhum Cliente cadastrado", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCpfCli.setText("");
@@ -823,16 +842,18 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 break;
             }
         }
-        if (elemEncontradoCli == false && listaVazia == false) {
+        if (elemEncontradoCli == false && listaVaziaCli == false) {
             JOptionPane.showMessageDialog(null, "Cliente não existe!", "Atenção", JOptionPane.ERROR_MESSAGE);
-            lblCli.setText("");
+            txtCpfCli.setText("");
         }
     }//GEN-LAST:event_btnConsultarClienteActionPerformed
 
     private void btnConsultarVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarVendedorActionPerformed
+        boolean listaVaziaVend, elemEncontradoVend = false;
 
-        listaVazia = pessoas.isEmpty();
-        if (listaVazia == true) {
+        listaVaziaVend = pessoas.isEmpty();
+
+        if (listaVaziaVend == true) {
 
             JOptionPane.showMessageDialog(null, "Nenhum Vendedor cadastrado", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCpfVend.setText("");
@@ -854,16 +875,16 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 break;
             }
         }
-        if (elemEncontradoVend == false && listaVazia == false) {
+        if (elemEncontradoVend == false && listaVaziaVend == false) {
             JOptionPane.showMessageDialog(null, "Vendedor não existe!", "Atenção", JOptionPane.ERROR_MESSAGE);
-            lblVend.setText("");
+            txtCpfVend.setText("");
         }
     }//GEN-LAST:event_btnConsultarVendedorActionPerformed
 
     private void btnConsultarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarProdutoActionPerformed
-
-        listaVazia = pessoas.isEmpty();
-        if (listaVazia == true) {
+        boolean listaVaziaProd, elemEncontradoProd = false;
+        listaVaziaProd = pessoas.isEmpty();
+        if (listaVaziaProd == true) {
 
             JOptionPane.showMessageDialog(null, "Nenhum Produto cadastrado", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCodProd.setText("");
@@ -883,15 +904,11 @@ public class GuiEmitirPedido extends javax.swing.JFrame {
                 break;
             }
         }
-        if (elemEncontradoProd == false && listaVazia == false) {
+        if (elemEncontradoProd == false && listaVaziaProd == false) {
             JOptionPane.showMessageDialog(null, "Produto não existe!", "Atenção", JOptionPane.ERROR_MESSAGE);
             txtCodProd.setText("");
         }
     }//GEN-LAST:event_btnConsultarProdutoActionPerformed
-
-    private void cbxFormaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxFormaPagamentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxFormaPagamentoActionPerformed
 
     private void txtDataPedidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataPedidoKeyPressed
 
